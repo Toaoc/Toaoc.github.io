@@ -162,9 +162,6 @@ void write(void)
 		//chaincheck(head);
 		for (current = head; current != NULL; current = current->next)
 		{
-			/*for (j = 0; (j < i + 1) && (strcmp(rname[j], current->name) != 0); j++);
-			if (j != i)*/
-
 			fprintf(nf, " %s %s %s %s %.2f %d ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
 			//printf("%s %s %s %s %.2f %d\n ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
 			//fflush(fp);
