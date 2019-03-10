@@ -18,5 +18,25 @@
     <ClCompile Include="运动会成绩管理.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="成绩录入.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="成绩查询.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="成绩修改.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="大小排序、检查字符串输入函数.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="链表检查、释放和得分函数.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cjgl.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
