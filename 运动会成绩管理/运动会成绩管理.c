@@ -59,6 +59,8 @@ void display(void)
 }
 void write(void)
 {
+	system("cls");
+	printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
 	char  wname[40], wsex[5], wcoll[30], witem[20], fname[20], fname1[20], ch, rname[40][30] = { 'a' };
@@ -72,7 +74,7 @@ void write(void)
 	strcpy(fname1, fname);
 	strcat(fname1, "c.txt");
 	strcat(fname, ".txt");
-	rename(fname, fname1);
+	//rename(fname, fname1);
 	/*fp = fopen(fname, "a+");
 	if (fp == NULL)
 	{
@@ -82,6 +84,8 @@ void write(void)
 	printf("请输入所要录入的项目(空行结束录入)：\n");
 	while (s_gets(witem, 45) != NULL && witem[0] != '\0')
 	{
+		rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
+		rename(fname, fname1);
 		fp = fopen(fname1, "a+");
 		if (fp == NULL)
 		{
@@ -113,11 +117,14 @@ void write(void)
 			prev = current;
 			printf("\n请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
 		}
+
 		rewind(fp);
 		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		i = 0;
 		while (!feof(fp))
 		{
+			if(!feof(fp))
+				fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 			if (strcmp(current->item, witem) == 0)
 			{
 				printf("%s\n", wname);
@@ -138,9 +145,10 @@ void write(void)
 			{
 				fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
 			}
-			fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
+			//fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		}
 		current->next = NULL;
+		//chaincheck(head);
 		if ((head->mark % 100) / 10 == 1)
 		{
 			head = maxsort(head);
@@ -170,8 +178,8 @@ void write(void)
 		rewind(fp);
 		while (!feof(fp))
 		{
-			if (!feof(fp))
-				fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
+			if (fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark) != 6)
+				break;
 			for (current = head, j = 0; (current != NULL) && (!feof(fp)); current = current->next)
 			{
 				if (strcmp(current->name, wname) == 0)
@@ -181,7 +189,7 @@ void write(void)
 			{
 				fprintf(nf, " %s %s %s %s %.2f %d ", wname, wsex, wcoll, witem, wscore, wmark);
 				printf("\n %s %s %s %s %.2f %d \n", wname, wsex, wcoll, witem, wscore, wmark);
-				//fflush(fp);
+				fflush(fp);
 			}
 			while ((ch = getc(fp)) == ' ');//吃掉空格，便于判断文件末尾
 			if (ch != ' '&&ch != EOF)
