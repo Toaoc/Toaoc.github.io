@@ -37,7 +37,7 @@ void search(void)
 		printf("请输入学院名：\n");
 		scanf("%s", colname);
 		seacol(colname);
-
+		break;
 	}
 	case 3:
 	{
@@ -45,6 +45,7 @@ void search(void)
 		printf("请输入学生姓名：\n");
 		scanf("%s", stuname);
 		seaname(stuname);
+		break;
 	}
 	}
 }
@@ -110,7 +111,7 @@ void search2(void)
 		int nc = 0, ic;
 		current = head;
 		strcpy(mcoll[0], current->coll);
-		tp[0] = current->mark % 10;
+		//tp[0] = current->mark % 10;
 		while (current != NULL)
 		{
 			for (ic = 0; ic < nc + 1; ic++)
@@ -119,7 +120,6 @@ void search2(void)
 				{
 					strcpy(mcoll[nc + 1], current->coll);
 					nc++;
-					tp[nc] = current->mark % 10;
 				}
 				else if (strcmp(mcoll[ic], current->coll) == 0)
 				{
@@ -136,6 +136,8 @@ void search2(void)
 		a = 1;
 		printf("返回上一层请按1\n退出程序请按2\n");
 		scanf("%d", &a);
+		if (a == 1)
+			break;
 		if (a == 2)
 			exit(0);
 	}

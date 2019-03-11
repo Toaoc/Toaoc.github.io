@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include "cjgl.h"
+#include<stdlib.h>
 void chainfree(struct stu *head)
 {
 	stu *current;

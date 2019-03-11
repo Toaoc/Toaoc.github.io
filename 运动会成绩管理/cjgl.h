@@ -14,7 +14,7 @@ typedef struct stu {
 
 void chaincheck(struct stu*head);
 void search(void);
-//void write(void);
+void enter(void);
 void alter(void);
 struct stu *minsort(struct stu *head);
 void goal3(struct stu * head);

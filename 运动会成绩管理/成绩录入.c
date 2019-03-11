@@ -1,17 +1,28 @@
-/*#include<stdio.h>
+#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<Windows.h>
 #include "cjgl.h"
 void wdisplay(void);
-void write(void)
+void ensex(char *witem,char *wsex);
+void enter(void);
+int get2(char *str);
+void ensex(char *witem,char *wsex)
+{
+	int i;
+	for (i = 0; i != 2; i++)
+		wsex[i] = witem[i];
+	wsex[i] = '\0';
+	printf("%s\t%s\n", witem, wsex);
+}
+void enter(void)
 {
 	system("cls");
 	printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
 	char  wname[40], wsex[5], wcoll[30], witem[20], fname[20], fname1[20], ch, rname[40][30] = { 'a' };
-	int a, b, wmark, i, j;
+	int a, b, wmark, i, j, k, n;
 	float wscore;
 	head = NULL;
 	prev = NULL;
@@ -28,8 +39,17 @@ void write(void)
 		printf("文件打开错误！\n");
 		exit(EXIT_FAILURE);
 	}*/
-	/*printf("请输入所要录入的项目(空行结束录入)：\n");
-	while (s_gets(witem, 45) != NULL && witem[0] != '\0')
+	for (k = 0;k!=-1; k++)
+	{
+		printf("请输入所要录入的项目(带性别，如男子跳远、女子跳高）：\n");
+		scanf("%s", witem);
+		ensex(witem, wsex);
+		if (strcmp(wsex, "男") != 0 || strcmp(wsex, "女") != 0)
+			break;
+		else
+			printf("请检查项目是否带上性别后重新输入：\n");
+	}
+	while (1)
 	{
 		rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
 		rename(fname, fname1);
@@ -53,8 +73,10 @@ void write(void)
 				prev->next = current;
 			strcpy(current->name, wname);
 			strcpy(current->item, witem);
-			printf("请输入%s的性别：\n", wname);
-			scanf("%s", current->sex);
+			strcpy(current->sex, wsex);
+			printf("%s\n", current->sex);
+			/*printf("请输入%s的性别：\n", wname);
+			scanf("%s", current->sex);*/
 			printf("请输入%s所属学院：\n", wname);
 			scanf("%s", current->coll);
 			printf("请输入%s的成绩：\n", wname);
@@ -150,7 +172,34 @@ void write(void)
 		fclose(nf);
 		remove(fname1);
 		printf("请输入另一要录入的项目(空行结束录入)：\n");
+		n = get2(witem);
+		if (n == 0)
+			break;
+		for (k = 0;; k++)
+		{
+			if (k > 0)
+			{
+				printf("请输入所要录入的项目(带性别，如男子跳远、女子跳高）：\n");
+				scanf("%s", witem);
+			}
+			ensex(witem, wsex);
+			if (strcmp(wsex, "男") != 0 || strcmp(wsex, "女") != 0)
+				break;
+			else
+				printf("请检查项目是否带上性别后重新输入：\n");
+		}
 
 	}
 
-}*/
+}
+int get2(char *str)
+{
+	char ch;
+	int i;
+	for (i = 0; (ch = getchar()) != '\n'; i++)
+	{
+		str[i] = ch;
+	}
+	str[i] = '\0';
+	return i;
+}
