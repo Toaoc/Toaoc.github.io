@@ -1,4 +1,4 @@
-#include<stdio.h>
+/*#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<Windows.h>
@@ -28,7 +28,7 @@ void write(void)
 		printf("文件打开错误！\n");
 		exit(EXIT_FAILURE);
 	}*/
-	printf("请输入所要录入的项目(空行结束录入)：\n");
+	/*printf("请输入所要录入的项目(空行结束录入)：\n");
 	while (s_gets(witem, 45) != NULL && witem[0] != '\0')
 	{
 		rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
@@ -153,4 +153,4 @@ void write(void)
 
 	}
 
-}
+}*/

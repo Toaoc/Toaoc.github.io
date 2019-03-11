@@ -2,10 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 #include<Windows.h>
+#include<io.h>
 #include "cjgl.h"
+void killdot(char *str);
 void sdisplay1(void);
 void sdisplay2(char tem[]);
 void search2(void);
+void seacol(char *colname);
+void seaname(char *stuname);
 void sdisplay1(void)
 {
 	system("cls");
@@ -26,12 +30,28 @@ void search(void)
 	switch (select)
 	{
 	case 1:search2();
+		break;
+	case 2:
+	{
+		char colname[30];
+		printf("请输入学院名：\n");
+		scanf("%s", colname);
+		seacol(colname);
+
+	}
+	case 3:
+	{
+		char stuname[40];
+		printf("请输入学生姓名：\n");
+		scanf("%s", stuname);
+		seaname(stuname);
+	}
 	}
 }
 void sdisplay2(char tem[])
 {
 	system("cls");
-	printf("\t\t\t1、%s届学院总分报表\n",tem);
+	printf("\t\t\t1、%s届学院总分报表查询\n",tem);
 	printf("\t\t\t2、%s届学院成绩查询\n",tem);
 	printf("\t\t\t3、%s届个人成绩查询\n",tem);
 	printf("\t\t\t4、%s届各项目成绩查询\n",tem);
@@ -44,23 +64,21 @@ void sdisplay2(char tem[])
 void search2(void)
 {
 	FILE *fp;
-	int a = 1;
+	int a ;
 	char ch;
-	char sname[40], tem[15], fname[30];
+	char sname[40], tem[15], fname[30], scoll[40], sitem[30];
 	printf("请输入要查询的届数：\n");
 	scanf("%s",tem);
+	strcpy(fname, tem);
+	strcat(fname, ".txt");
 	sdisplay2(tem);
 	int choice;
 	scanf("%d", &choice);
-	FILE *fp;
-	int a = 1;
-	char ch;
-	char sname[40];
 	stu *current, *prev, *head;
 	current = NULL;
 	head = NULL;
 	prev = NULL;
-	fp = fopen("成绩.txt", "r+");
+	fp = fopen(fname, "r+");
 	if (fp == NULL)
 	{
 		printf("文件无法打开\n");
@@ -85,7 +103,71 @@ void search2(void)
 	//head=sort(head);
 	switch (choice)
 	{
+	case 1:
+	{
+		char mcoll[30][30] = { 'a' };
+		int tp[30] = { 0 };
+		int nc = 0, ic;
+		current = head;
+		strcpy(mcoll[0], current->coll);
+		tp[0] = current->mark % 10;
+		while (current != NULL)
+		{
+			for (ic = 0; ic < nc + 1; ic++)
+			{
+				if (strcmp(mcoll[ic], current->coll) != 0 && ic == nc)
+				{
+					strcpy(mcoll[nc + 1], current->coll);
+					nc++;
+					tp[nc] = current->mark % 10;
+				}
+				else if (strcmp(mcoll[ic], current->coll) == 0)
+				{
+					tp[ic] = tp[ic] + current->mark % 10;
+					break;
+				}
+			}
+			current = current->next;
+		}
+		for (ic = 0; ic < nc + 1; ic++)
+		{
+			printf("%s\t%d\n", mcoll[ic], tp[ic]);
+		}
+		a = 1;
+		printf("返回上一层请按1\n退出程序请按2\n");
+		scanf("%d", &a);
+		if (a == 2)
+			exit(0);
+	}
+	case 2://按学院进行查询
+	{
+		a = 1;
+		while (a == 1)
+		{
+			printf("请输入要查询的学院名称：\n");
+			s_gets(scoll, 40);
+			current = head;
+			while (current != NULL)
+			{
+				if (strcmp(current->coll, scoll) == 0)
+				{
+					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+					a++;
+				}
+				current = current->next;
+			}
+			if (a == 1)
+				printf("没有此学院，请检查后重新输入\n");
+			printf("继续查询请按1\n返回上一层请按2\n退出程序请按3\n");
+			scanf("%d", &a);
+			if (a == 3)
+				exit(0);
+		}
+		break;
+	}
 	case 3: //按姓名进行查询
+	{	
+		a = 1;
 		while (a == 1)
 		{
 			printf("请输入姓名：\n");
@@ -107,8 +189,35 @@ void search2(void)
 			if (a == 3)
 				exit(0);
 		}
-		break;
-	case 7:
+	}
+	break;
+	case 4:
+	{
+		a = 1;
+		while (a == 1)
+		{
+			printf("请输入项目名称：\n");
+			s_gets(sitem, 30);
+			current = head;
+			while (current != NULL)
+			{
+				if (strcmp(current->item,sitem) == 0)
+				{
+					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+					a++;
+				}
+				current = current->next;
+			}
+			if (a == 1)
+				printf("没有此项目，请检查后重新输入！\n");
+			printf("继续查询请按1\n返回上一层请按2\n退出程序请按3\n");
+			scanf("%d", &a);
+			if (a == 3)
+				exit(0);
+		}
+	}
+	break;
+	case 5://输出该届全部成绩
 	{
 		char mitem[30][30] = { 'a' };
 		int n = 0, i;
@@ -142,6 +251,7 @@ void search2(void)
 			}
 			current = head;
 		}
+		a = 1;
 		printf("返回上一层请按1\n退出程序请按2\n");
 		scanf("%d", &a);
 		if (a == 2)
@@ -150,4 +260,123 @@ void search2(void)
 	case 8:exit(0);
 	}
 	fclose(fp);
+}
+void seacol(char *colname)
+{
+
+	long Handle;
+	FILE *fp;
+	char scname[40], scsex[5], scitem[30], sccol[40], str[20];
+	float scsco;
+	int  scmark;
+	struct _finddata_t FileInfo;
+
+	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)
+
+		printf("暂无运动会成绩，请进行录入\n");
+
+	else
+
+	{
+
+		//printf("%s\n", FileInfo.name);
+		strcpy(str, FileInfo.name);
+		killdot(str);
+		printf("%s:\n", str);
+		fp = fopen(FileInfo.name, "r + ");
+		while (!feof(fp))
+		{
+			if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+				break;
+			if (strcmp(sccol, colname) == 0)
+				printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+		}
+		fclose(fp);
+		//printf('\n');
+		while (_findnext(Handle, &FileInfo) == 0)
+		{
+			//printf("%s\n", FileInfo.name);
+			strcpy(str, FileInfo.name);
+			killdot(str);
+			printf("%s:\n", str);
+			fp = fopen(FileInfo.name, "r+");
+			while (!feof(fp))
+			{
+				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+					break;
+				if (strcmp(sccol, colname) == 0)
+					printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+			}
+			fclose(fp);
+			//printf('\n');
+		}
+		_findclose(Handle);
+
+	}
+}
+void seaname(char *stuname)
+{
+
+	long Handle;
+	FILE *fp;
+	char scname[40], scsex[5], scitem[30], sccol[40], str[20];
+	float scsco;
+	int  scmark;
+	struct _finddata_t FileInfo;
+
+	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)
+
+		printf("暂无运动会成绩，请进行录入\n");
+
+	else
+
+	{
+
+		//printf("%s\n", FileInfo.name);
+		strcpy(str, FileInfo.name);
+		killdot(str);
+		//printf("%s:\n", str);
+		fp = fopen(FileInfo.name, "r + ");
+		while (!feof(fp))
+		{
+			if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+				break;
+			if (strcmp(scname, stuname) == 0)
+			{
+				printf("%s:\n", str);
+				printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+			}
+		}
+		fclose(fp);
+		//printf('\n');
+		while (_findnext(Handle, &FileInfo) == 0)
+		{
+			//printf("%s\n", FileInfo.name);
+			strcpy(str, FileInfo.name);
+			killdot(str);
+			//printf("%s:\n", str);
+			fp = fopen(FileInfo.name, "r+");
+			while (!feof(fp))
+			{
+				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+					break;
+				if (strcmp(scname, stuname) == 0)
+				{
+					printf("%s:\n", str);
+					printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+				}
+			}
+			fclose(fp);
+			//printf('\n');
+		}
+		_findclose(Handle);
+
+	}
+}
+void killdot(char *str)
+{
+	int i;
+	for (i = 0; str[i] != '.'; i++);
+	str[i] = '\0';
+	//return  str;
 }
