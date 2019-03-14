@@ -59,7 +59,6 @@ void sdisplay2(char tem[])
 	printf("\t\t\t5、%s届全部成绩\n",tem);
 	printf("\t\t\t6、返回上一层\n");
 	printf("\t\t\t7、退出程序\n");
-	printf("注意：在本次程序运行中录入的成绩需重启后方可查询\n");
 	printf("请输入数字1-7执行程序：\n");
 }
 void search2(void)
@@ -68,6 +67,7 @@ void search2(void)
 	int a ;
 	char ch;
 	char sname[40], tem[15], fname[30], scoll[40], sitem[30];
+	system("cls");
 	printf("请输入要查询的届数：\n");
 	scanf("%s",tem);
 	strcpy(fname, tem);

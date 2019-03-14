@@ -8,10 +8,11 @@ typedef struct stu {
 	char coll[40];
 	char item[30];
 	float score;
-	int mark;//标记码
+	int mark;//标记码,第一位代表取多少名，第二位：1代表从高排到低，2代表从低排到高，第三位代表得分
 	struct stu *next;
 }stu;
 
+void wrifile(stu *head, char *fname, char xiuitem[][30]);
 void chaincheck(struct stu*head);
 void search(void);
 void enter(void);
