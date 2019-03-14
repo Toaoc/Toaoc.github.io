@@ -25,10 +25,18 @@ void chaincheck(struct stu*head)
 }
 void goal3(struct stu*head)
 {
-	stu  *current;
+	stu  *current, *prev;
 	int a;
-	for (current = head, a = 1; current != NULL; current = current->next, a++)
+	for (prev = current = head, a = 1; current != NULL; prev=current,current = current->next)
 	{
+		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)
+		{
+			if ((current != head) && (strcmp(current->coll, prev->coll) == 0))
+			{
+				current->mark = prev->mark;
+				continue;
+			}
+		}
 		if (a == 1)
 		{
 			current->mark = ((current->mark) / 10) * 10 + 5;
@@ -45,14 +53,23 @@ void goal3(struct stu*head)
 		{
 			current->mark = ((current->mark) / 10) * 10 + 0;
 		}
+		a++;
 	}
 }
 void goal5(struct stu*head)
 {
-	stu  *current;
+	stu  *current, *prev;
 	int a;
-	for (current = head, a = 1; current != NULL; current = current->next, a++)
+	for (prev = current = head, a = 1; current != NULL; prev=current,current = current->next)
 	{
+		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)
+		{
+			if ((current != head)&& (strcmp(current->coll, prev->coll) == 0))
+			{
+				current->mark = prev->mark;
+				continue;
+			}
+		}
 		if (a == 1)
 		{
 			current->mark = ((current->mark) / 10) * 10 + 7;
@@ -77,5 +94,7 @@ void goal5(struct stu*head)
 		{
 			current->mark = ((current->mark) / 10) * 10 + 0;
 		}
+		a++;
+		
 	}
 }
