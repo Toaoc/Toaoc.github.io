@@ -10,6 +10,12 @@ void sdisplay2(char tem[]);
 void search2(void);
 void seacol(char *colname);
 void seaname(char *stuname);
+typedef struct fen {
+	char coll[40];
+	int score;
+	struct fen *next;
+}fen;
+struct fen *totalsort(fen *head);
 void sdisplay1(void)
 {
 	system("cls");
@@ -79,7 +85,7 @@ void search2(void)
 	current = NULL;
 	head = NULL;
 	prev = NULL;
-	fp = fopen(fname, "r+");
+	fp = fopen(fname, "r");
 	if (fp == NULL)
 	{
 		printf("文件无法打开\n");
@@ -106,32 +112,65 @@ void search2(void)
 	{
 	case 1:
 	{
-		char mcoll[30][30] = { 'a' };
+
+		fen *first, *p, *bef, *point;
 		int tp[30] = { 0 };
 		int nc = 0, ic;
+		stu *cpre, *q, *qpre;
+
+		first = p = bef = NULL;
 		current = head;
-		strcpy(mcoll[0], current->coll);
-		//tp[0] = current->mark % 10;
-		while (current != NULL)
+		if (NULL == first)
 		{
-			for (ic = 0; ic < nc + 1; ic++)
+			first = (fen*)malloc(sizeof(fen));
+			strcpy(first->coll, current->coll);
+			first->score = 0;
+			bef = p = first;
+		}
+		for (q = qpre = head; q != NULL; qpre = q, q = q->next)
+		{
+		
+			if (strcmp(current->coll, q->coll) != 0)
 			{
-				if (strcmp(mcoll[ic], current->coll) != 0 && ic == nc)
+				for (point = first,ic = 0; point != p->next; point = point->next)
 				{
-					strcpy(mcoll[nc + 1], current->coll);
-					nc++;
+					if (strcmp(q->coll, point->coll) == 0)
+						ic++;
 				}
-				else if (strcmp(mcoll[ic], current->coll) == 0)
+				if (ic > 0)
+					continue;
+				p = (fen*)malloc(sizeof(fen));
+				bef->next = p;
+				p->score = 0;
+				strcpy(p->coll, q->coll);
+				bef = p;
+			}
+		}
+		p->next = NULL;
+		for (p = first; p != NULL; p = p->next)
+			printf("%s\n", p->coll);
+		for (p=first; p != NULL; p = p->next)
+		{
+			
+			for (qpre = q = head;q!=NULL; qpre = q, q = q->next)
+			{
+				if (strcmp(p->coll, q->coll) == 0)
 				{
-					tp[ic] = tp[ic] + current->mark % 10;
-					break;
+					if (((q->mark % 100) / 10 == 3 || (q->mark % 100) / 10 == 4) && strcmp(qpre->coll, q->coll) == 0 && strcmp(qpre->item, q->item) == 0)
+					{
+						if (q != head)
+							continue;
+					}
+					p->score = p->score + (q->mark % 10);
 				}
 			}
-			current = current->next;
 		}
-		for (ic = 0; ic < nc + 1; ic++)
+		first = totalsort(first);
+		for (p = first; p != NULL;)
 		{
-			printf("%s\t%d\n", mcoll[ic], tp[ic]);
+			first = p->next;
+			free(p);
+			p = first;
 		}
 		a = 1;
 		printf("返回上一层请按1\n退出程序请按2\n");
@@ -381,4 +420,49 @@ void killdot(char *str)
 	for (i = 0; str[i] != '.'; i++);
 	str[i] = '\0';
 	//return  str;
+}
+struct fen *totalsort(fen *head)//该函数是从1个逐渐拉到多个的排法
+{
+	fen *pfirst = NULL;
+	fen *ptail = NULL;
+	fen *pmaxBefore = NULL;
+	fen *pmax = NULL;
+	fen *p = NULL;
+	while (head != NULL)
+	{
+		for (p = head, pmax = head; p->next != NULL; p = p->next)
+		{
+			if (p->next->score > pmax->score)
+			{
+				pmaxBefore = p;
+				pmax = p->next;//找出最大的链节
+			}
+		}
+
+		if (pfirst == NULL)
+		{
+			pfirst = pmax;//将最大链节赋给pfirst指针
+			ptail = pmax;
+		}
+		else
+		{
+			ptail->next = pmax;
+			ptail = pmax;//逐渐拉开排序
+		}
+		//printf("\t%s\t%.2f\n", ptail->name, ptail->score);
+		if (pmax == head)
+		{
+			head = head->next;//若最大的链节为head，则将head去掉
+		}
+		else
+		{
+			pmaxBefore->next = pmax->next;//去掉最大的链节后再进行排序，类似冒泡
+		}
+	}
+	if (pfirst != NULL)
+	{
+		ptail->next = NULL;
+	}
+	head = pfirst;
+	return head;
 }
