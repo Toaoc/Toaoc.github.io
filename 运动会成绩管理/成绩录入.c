@@ -5,12 +5,39 @@
 #include "cjgl.h"
 void wdisplay(void);
 void ensex(char *witem,char *wsex);
-void enter(void);
+void singlewrite(char*fname);
+void teamwrite(char*fname);
 int get2(char *str);
-void wdisplay(void)
+void enter(void)
 {
-	printf("1、个人项目录入\n");
-	printf("2、团体项目录入\n");
+	char fname[30];
+	int choice;
+	choice = -1;
+	while (choice != 3)
+	{
+		printf("请输入要录入的年份：\n");
+		scanf("%s", fname);
+		system("cls");
+		printf("\t\t\t1、个人项目录入\n");
+		printf("\t\t\t2、团体项目录入\n");
+		printf("\t\t\t3、返回上一层\n");
+		printf("\t\t\t4、退出程序\n");
+		printf("请输入数字1-4执行程序：");
+		scanf("%d", &choice);
+		switch (choice)
+		{
+		case 1:singlewrite(fname);
+			break;
+		case 2:teamwrite(fname);
+			break;
+		case 3:
+			break;
+		case 4:exit(0);
+			break;
+		default:printf("请输入数字1-4执行程序：");
+
+		}
+	}
 }
 void ensex(char *witem,char *wsex)
 {
@@ -20,20 +47,20 @@ void ensex(char *witem,char *wsex)
 	wsex[i] = '\0';
 	printf("%s\t%s\n", witem, wsex);
 }
-void enter(void)
+void singlewrite(char *fname)
 {
-	system("cls");
-	printf("注意！录入时请不要中途退出！！\n");
+	//system("cls");
+	//printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname[20], fname1[20], ch, rname[40][30] = { 'a' };
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };
 	int a, b, wmark, i, j, k, n;
 	float wscore;
 	head = NULL;
 	prev = NULL;
 	current = NULL;
-	printf("请输入运动会届数：\n");
-	scanf("%s", fname);
+	/*printf("请输入运动会届数：\n");
+	scanf("%s", fname);*/
 	strcpy(fname1, fname);
 	strcat(fname1, "c.txt");
 	strcat(fname, ".txt");
@@ -89,7 +116,7 @@ void enter(void)
 			current->mark = 100 * a + 10 * b;
 			printf("录入成功！\n");
 			prev = current;
-			printf("\n请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
+			printf("请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
 		}
 
 		rewind(fp);
@@ -176,7 +203,7 @@ void enter(void)
 		fclose(fp);
 		fclose(nf);
 		remove(fname1);
-		printf("请输入另一要录入的项目(空行结束录入)：\n");
+		printf("请输入所要录入的项目(带性别，如男子跳远、女子跳高）：\n");
 		n = get2(witem);
 		if (n == 0)
 			break;
@@ -197,20 +224,20 @@ void enter(void)
 	}
 
 }
-void teamwrite(void)
+void teamwrite(char*fname)
 {
-	system("cls");
-	printf("注意！录入时请不要中途退出！！\n");
+	//system("cls");
+	//printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname[20], fname1[20], ch, rname[40][30] = { 'a' };
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };
 	int a, b, wmark, i, j, k, n, c;
 	float wscore;
 	head = NULL;
 	prev = NULL;
 	current = NULL;
-	printf("请输入运动会届数：\n");
-	scanf("%s", fname);
+	//printf("请输入运动会届数：\n");
+	//scanf("%s", fname);
 	strcpy(fname1, fname);
 	strcat(fname1, "c.txt");
 	strcat(fname, ".txt");

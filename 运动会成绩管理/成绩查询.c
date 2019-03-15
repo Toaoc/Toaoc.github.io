@@ -30,29 +30,39 @@ void sdisplay1(void)
 
 void search(void)
 {
-	sdisplay1();
 	int select;
-	scanf("%d", &select);
-	switch (select)
+	select = 0;
+	while (select != 4)
 	{
-	case 1:search2();
-		break;
-	case 2:
-	{
-		char colname[30];
-		printf("请输入学院名：\n");
-		scanf("%s", colname);
-		seacol(colname);
-		break;
-	}
-	case 3:
-	{
-		char stuname[40];
-		printf("请输入学生姓名：\n");
-		scanf("%s", stuname);
-		seaname(stuname);
-		break;
-	}
+		sdisplay1();
+		scanf("%d", &select);
+		switch (select)
+		{
+		case 1:search2();
+			break;
+		case 2:
+		{
+			char colname[30];
+			printf("请输入学院名：\n");
+			scanf("%s", colname);
+			seacol(colname);
+			break;
+		}
+		case 3:
+		{
+			char stuname[40];
+			printf("请输入学生姓名：\n");
+			scanf("%s", stuname);
+			seaname(stuname);
+			break;
+		}
+		case 4:
+			break;
+		case 5:
+			exit(0);
+		default:
+			printf("请输入数字1-5：\n");
+		}
 	}
 }
 void sdisplay2(char tem[])
@@ -78,6 +88,7 @@ void search2(void)
 	scanf("%s",tem);
 	strcpy(fname, tem);
 	strcat(fname, ".txt");
+	//sdisplay2(tem);
 	sdisplay2(tem);
 	int choice;
 	scanf("%d", &choice);
@@ -108,197 +119,256 @@ void search2(void)
 	}
 	current->next = NULL;
 	//head=sort(head);
-	switch (choice)
+	while(choice!=6)
 	{
-	case 1:
-	{
+		if (choice == 0)
+		{
+			sdisplay2(tem);
+			scanf("%d", &choice);
+		}
+		switch (choice)
+		{
+		case 1:
+		{
 
-		fen *first, *p, *bef, *point;
-		int tp[30] = { 0 };
-		int nc = 0, ic;
-		stu *cpre, *q, *qpre;
+			fen *first, *p, *bef, *point;
+			int tp[30] = { 0 };
+			int nc = 0, ic;
+			stu  *q, *qpre;
 
-		first = p = bef = NULL;
-		current = head;
-		if (NULL == first)
-		{
-			first = (fen*)malloc(sizeof(fen));
-			strcpy(first->coll, current->coll);
-			first->score = 0;
-			bef = p = first;
-		}
-		for (q = qpre = head; q != NULL; qpre = q, q = q->next)
-		{
-		
-			if (strcmp(current->coll, q->coll) != 0)
-			{
-				for (point = first,ic = 0; point != p->next; point = point->next)
-				{
-					if (strcmp(q->coll, point->coll) == 0)
-						ic++;
-				}
-				if (ic > 0)
-					continue;
-				p = (fen*)malloc(sizeof(fen));
-				bef->next = p;
-				p->score = 0;
-				strcpy(p->coll, q->coll);
-				bef = p;
-			}
-		}
-		p->next = NULL;
-		for (p = first; p != NULL; p = p->next)
-			printf("%s\n", p->coll);
-		for (p=first; p != NULL; p = p->next)
-		{
-			
-			for (qpre = q = head;q!=NULL; qpre = q, q = q->next)
-			{
-				if (strcmp(p->coll, q->coll) == 0)
-				{
-					if (((q->mark % 100) / 10 == 3 || (q->mark % 100) / 10 == 4) && strcmp(qpre->coll, q->coll) == 0 && strcmp(qpre->item, q->item) == 0)
-					{
-						if (q != head)
-							continue;
-					}
-					p->score = p->score + (q->mark % 10);
-				}
-			}
-		}
-		first = totalsort(first);
-		for (p = first; p != NULL;)
-		{
-			first = p->next;
-			free(p);
-			p = first;
-		}
-		a = 1;
-		printf("返回上一层请按1\n退出程序请按2\n");
-		scanf("%d", &a);
-		if (a == 1)
-			break;
-		if (a == 2)
-			exit(0);
-	}
-	case 2://按学院进行查询
-	{
-		a = 1;
-		while (a == 1)
-		{
-			printf("请输入要查询的学院名称：\n");
-			s_gets(scoll, 40);
+			first = p = bef = NULL;
 			current = head;
-			while (current != NULL)
+			if (NULL == first)
 			{
-				if (strcmp(current->coll, scoll) == 0)
-				{
-					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
-					a++;
-				}
-				current = current->next;
+				first = (fen*)malloc(sizeof(fen));
+				strcpy(first->coll, current->coll);
+				first->score = 0;
+				bef = p = first;
 			}
-			if (a == 1)
-				printf("没有此学院，请检查后重新输入\n");
-			printf("继续查询请按1\n返回上一层请按2\n退出程序请按3\n");
+			for (q = qpre = head; q != NULL; qpre = q, q = q->next)
+			{
+
+				if (strcmp(current->coll, q->coll) != 0)
+				{
+					for (point = first, ic = 0; point != p->next; point = point->next)
+					{
+						if (strcmp(q->coll, point->coll) == 0)
+							ic++;
+					}
+					if (ic > 0)
+						continue;
+					p = (fen*)malloc(sizeof(fen));
+					bef->next = p;
+					p->score = 0;
+					strcpy(p->coll, q->coll);
+					bef = p;
+				}
+			}
+			p->next = NULL;
+			for (p = first; p != NULL; p = p->next)
+			{
+
+				for (qpre = q = head; q != NULL; qpre = q, q = q->next)
+				{
+					if (strcmp(p->coll, q->coll) == 0)
+					{
+						if (((q->mark % 100) / 10 == 3 || (q->mark % 100) / 10 == 4) && strcmp(qpre->coll, q->coll) == 0 && strcmp(qpre->item, q->item) == 0)
+						{
+							if (q != head)
+								continue;
+						}
+						p->score = p->score + (q->mark % 10);
+					}
+				}
+			}
+			first = totalsort(first);
+			printf("\n");
+			for (p = first; p != NULL;)
+			{
+				printf("%s\t%d\n", first->coll, first->score);
+				first = p->next;
+				free(p);
+				p = first;
+			}
+			printf("\n");
+			printf("继续%s届查询请按1\n查询其他届请按2\n退出程序请按3\n",tem);
 			scanf("%d", &a);
+			if (a == 1)
+			{
+				choice = 0;
+				break;
+			}
+			if (a == 2)
+				choice = 6;
 			if (a == 3)
 				exit(0);
 		}
 		break;
-	}
-	case 3: //按姓名进行查询
-	{	
-		a = 1;
-		while (a == 1)
+		case 2://按学院进行查询
 		{
-			printf("请输入姓名：\n");
-			s_gets(sname, 40);
-			current = head;
-			while (current != NULL)
+			a = 1;
+			while (a == 1)
 			{
-				if (strcmp(current->name, sname) == 0)
+				printf("请输入要查询的学院名称：\n");
+				s_gets(scoll, 40);
+				current = head;
+				while (current != NULL)
 				{
-					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
-					a++;
+					if (strcmp(current->coll, scoll) == 0)
+					{
+						if (a == 1)
+							printf("\n");
+						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						a++;
+					}
+					current = current->next;
 				}
-				current = current->next;
-			}
-			if (a == 1)
-				printf("查无此人\n");
-			printf("继续查询请按1\n返回上一层请按2\n退出程序请按3\n");
-			scanf("%d", &a);
-			if (a == 3)
-				exit(0);
-		}
-	}
-	break;
-	case 4:
-	{
-		a = 1;
-		while (a == 1)
-		{
-			printf("请输入项目名称：\n");
-			s_gets(sitem, 30);
-			current = head;
-			while (current != NULL)
-			{
-				if (strcmp(current->item,sitem) == 0)
+				if (a == 1)
+					printf("没有此学院，请检查后重新输入\n");
+				printf("\n继续进行学院查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
+				scanf("%d", &a);
+				switch (a)
 				{
-					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
-					a++;
-				}
-				current = current->next;
-			}
-			if (a == 1)
-				printf("没有此项目，请检查后重新输入！\n");
-			printf("继续查询请按1\n返回上一层请按2\n退出程序请按3\n");
-			scanf("%d", &a);
-			if (a == 3)
-				exit(0);
-		}
-	}
-	break;
-	case 5://输出该届全部成绩
-	{
-		char mitem[30][30] = { 'a' };
-		int n = 0, i;
-		current = head;
-		strcpy(mitem[0], current->item);
-		while (current != NULL)
-		{
-			for (i = 0; i < n + 1; i++)
-			{
-				if (strcmp(mitem[i], current->item) != 0 && i == n)
-				{
-					strcpy(mitem[n + 1], current->item);
-					n++;
-				}
-				else if (strcmp(mitem[i], current->item) == 0)
-				{
+				case 1:
+					break;
+				case 2:choice = 0;
+					break;
+				case 3:choice = 6;
+					break;
+				case 4:exit(0);
+				default:
 					break;
 				}
 			}
-			current = current->next;
 		}
-		for (current = head, i = 0; current != NULL && i < n + 1; i++)
+		break;
+		case 3: //按姓名进行查询
 		{
-			for (; current != NULL;)
+			a = 1;
+			while (a == 1)
 			{
-				if (strcmp(mitem[i], current->item) == 0)
+				printf("请输入姓名：\n");
+				s_gets(sname, 40);
+				current = head;
+				while (current != NULL)
 				{
-					printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+					if (strcmp(current->name, sname) == 0)
+					{
+						if (a == 1)
+							printf("\n");
+						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						a++;
+					}
+					current = current->next;
+				}
+				if (a == 1)
+					printf("查无此人\n");
+				printf("\n继续进行姓名查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
+				scanf("%d", &a);
+				switch (a)
+				{
+				case 1:
+					break;
+				case 2:choice = 0;
+					break;
+				case 3:choice = 6;
+					break;
+				case 4:exit(0);
+				default:
+					break;
+				}
+			}
+		}
+		break;
+		case 4://按项目进行查询
+		{
+			a = 1;
+			while (a == 1)
+			{
+				printf("请输入项目名称(带性别，如男子跳高、女子跳远)：\n");
+				s_gets(sitem, 30);
+				current = head;
+				while (current != NULL)
+				{
+					if (strcmp(current->item, sitem) == 0)
+					{
+						if (a == 1)
+							printf("\n");
+						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						a++;
+					}
+					current = current->next;
+				}
+				if (a == 1)
+					printf("没有此项目，请检查后重新输入！\n");
+				printf("\n继续进行项目查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
+				scanf("%d", &a);
+				switch (a)
+				{
+				case 1:
+					break;
+				case 2:choice = 0;
+					break;
+				case 3:choice = 6;
+					break;
+				case 4:exit(0);
+				default:
+					break;
+				}
+			}
+		}
+		break;
+		case 5://输出该届全部成绩
+		{
+			char mitem[30][30] = { 'a' };
+			int n = 0, i;
+			current = head;
+			strcpy(mitem[0], current->item);
+			while (current != NULL)
+			{
+				for (i = 0; i < n + 1; i++)
+				{
+					if (strcmp(mitem[i], current->item) != 0 && i == n)
+					{
+						strcpy(mitem[n + 1], current->item);
+						n++;
+					}
+					else if (strcmp(mitem[i], current->item) == 0)
+					{
+						break;
+					}
 				}
 				current = current->next;
 			}
-			current = head;
+			for (current = head, i = 0; current != NULL && i < n + 1; i++)
+			{
+				for (; current != NULL;)
+				{
+					if (strcmp(mitem[i], current->item) == 0)
+					{
+						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+					}
+					current = current->next;
+				}
+				current = head;
+			}
+			a = 1;
+			printf("\n继续%s届查询请按1\n查询其他届请按2\n退出程序请按3\n", tem);
+			scanf("%d", &a);
+			switch (a)
+			{
+			case 1:choice = 0;
+				break;
+			case 2:choice = 6;
+				break;
+			case 3:exit(0);
+			default:
+				break;
+			}
 		}
-		a = 1;
-		printf("返回上一层请按1\n退出程序请按2\n");
-		scanf("%d", &a);
-		if (a == 2)
-			exit(0);
-	}
-	case 8:exit(0);
+		break;
+		case 7:exit(0);
+		}
 	}
 	fclose(fp);
 }
