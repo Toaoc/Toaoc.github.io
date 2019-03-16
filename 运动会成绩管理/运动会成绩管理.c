@@ -6,6 +6,7 @@
 void display(void);
 int main(void)
 {
+	system("color F8");
 	int a = 0;
 	while (a != 4)
 	{

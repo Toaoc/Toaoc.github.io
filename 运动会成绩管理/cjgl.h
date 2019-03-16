@@ -22,6 +22,7 @@ void goal3(struct stu * head);
 void goal5(struct stu * head);
 void chainfree(struct stu * head);
 struct stu *maxsort(struct stu * head);
+void color(short int x);
 char *s_gets(char *st, int n);
 
 #endif // !_CJGL_H

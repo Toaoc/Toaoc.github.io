@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include "cjgl.h"
 #include<stdlib.h>
+#include<string.h>
+#include<Windows.h>
 void chainfree(struct stu *head)
 {
 	stu *current;
@@ -96,5 +98,19 @@ void goal5(struct stu*head)
 		}
 		a++;
 		
+	}
+}
+void color(short int x)
+{        /*仅限改变0-15的颜色;如果在0-15那么实现他的颜色   因为如果超过15后面的改变的是文本背景色。*/
+	switch (x)
+	{
+	case 1: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 758);
+		break;
+	case 2: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 498);
+		break;
+	case 3: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 499);
+		break;
+	default: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 504);
+		break;
 	}
 }

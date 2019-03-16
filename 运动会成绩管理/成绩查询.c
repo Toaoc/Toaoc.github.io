@@ -183,9 +183,11 @@ void search2(void)
 			}
 			first = totalsort(first);
 			printf("\n");
-			for (p = first; p != NULL;)
+			for (a = 1,p = first; p != NULL;a++)
 			{
+				color(a);
 				printf("%s\t%d\n", first->coll, first->score);
+				color(4);
 				first = p->next;
 				free(p);
 				p = first;
@@ -294,7 +296,22 @@ void search2(void)
 					{
 						if (a == 1)
 							printf("\n");
+						if (current->mark % 10 == 7)
+							color(1);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
+							color(1);
+						else if (current->mark / 100 == 5 && current->mark % 10 == 5)
+							color(2);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
+							color(2);
+						else if (current->mark / 100 == 5 && current->mark % 10 == 3)
+							color(3);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 2)
+							color(3);
+						else
+							color(4);
 						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						color(4);
 						a++;
 					}
 					current = current->next;
@@ -346,7 +363,24 @@ void search2(void)
 				{
 					if (strcmp(mitem[i], current->item) == 0)
 					{
+						if (current->mark % 10 == 7)
+							color(1);
+						if (current->mark % 10 == 7)
+							color(1);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
+							color(1);
+						else if (current->mark / 100 == 5 && current->mark % 10 == 5)
+							color(2);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
+							color(2);
+						else if (current->mark / 100 == 5 && current->mark % 10 == 3)
+							color(3);
+						else if (current->mark / 100 == 3 && current->mark % 10 == 2)
+							color(3);
+						else
+							color(4);
 						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						color(4);
 					}
 					current = current->next;
 				}
