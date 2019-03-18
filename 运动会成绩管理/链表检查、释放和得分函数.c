@@ -104,13 +104,15 @@ void color(short int x)
 {        /*仅限改变0-15的颜色;如果在0-15那么实现他的颜色   因为如果超过15后面的改变的是文本背景色。*/
 	switch (x)
 	{
+	case 0: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 505);
+		break;
 	case 1: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 758);
 		break;
 	case 2: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 498);
 		break;
 	case 3: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 499);
 		break;
-	default: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 504);
+	default: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240);
 		break;
 	}
 }

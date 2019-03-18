@@ -33,6 +33,9 @@
     <ClCompile Include="链表检查、释放和得分函数.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="成绩删除.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cjgl.h">

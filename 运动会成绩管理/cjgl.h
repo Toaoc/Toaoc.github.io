@@ -17,6 +17,7 @@ void chaincheck(struct stu*head);
 void search(void);
 void enter(void);
 void alter(void);
+void dele(void);
 struct stu *minsort(struct stu *head);
 void goal3(struct stu * head);
 void goal5(struct stu * head);

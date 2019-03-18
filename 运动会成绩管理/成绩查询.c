@@ -464,9 +464,9 @@ void seaname(char *stuname)
 
 	long Handle;
 	FILE *fp;
-	char scname[40], scsex[5], scitem[30], sccol[40], str[20];
+	char scname[40], scsex[5], scitem[30], sccol[40], str[20], rankitem[30];
 	float scsco;
-	int  scmark;
+	int  scmark, rank;
 	struct _finddata_t FileInfo;
 
 	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)
@@ -482,15 +482,22 @@ void seaname(char *stuname)
 		killdot(str);
 		//printf("%s:\n", str);
 		fp = fopen(FileInfo.name, "r + ");
+		rank = 1;
 		while (!feof(fp))
 		{
 			if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
 				break;
+			if (strcmp(scitem, rankitem) != 0)
+				rank = 1;
+			else
+				rank++;
 			if (strcmp(scname, stuname) == 0)
 			{
 				printf("%s:\n", str);
-				printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+				printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
+				printf("%s\t%s\t%s\t%s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco,rank);
 			}
+			strcpy(rankitem, scitem);
 		}
 		fclose(fp);
 		//printf('\n');
@@ -501,17 +508,25 @@ void seaname(char *stuname)
 			killdot(str);
 			//printf("%s:\n", str);
 			fp = fopen(FileInfo.name, "r+");
+			rank = 1;
 			while (!feof(fp))
 			{
 				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
 					break;
+				if (strcmp(scitem, rankitem) != 0)
+					rank = 1;
+				else
+					rank++;
 				if (strcmp(scname, stuname) == 0)
 				{
 					printf("%s:\n", str);
-					printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+					printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
+					printf("%s\t%s\t%s\t%s\t%.2f%d\n", scname, scsex, sccol, scitem, scsco,rank);
 				}
+				strcpy(rankitem, scitem);
 			}
 			fclose(fp);
+			while (getchar() != '\n');
 			//printf('\n');
 		}
 		_findclose(Handle);
