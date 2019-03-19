@@ -80,14 +80,17 @@ void sdisplay2(char tem[])
 void search2(void)
 {
 	FILE *fp;
-	int a ;
+	int a, rank;
 	char ch;
-	char sname[40], tem[15], fname[30], scoll[40], sitem[30];
+	char sname[40], tem[15], fname[30], scoll[40], sitem[30], rankitem[30], temf[15];
 	system("cls");
 	printf("请输入要查询的届数：\n");
 	scanf("%s",tem);
 	strcpy(fname, tem);
+	strcpy(temf, tem);
+	strcat(temf, "c.txt");
 	strcat(fname, ".txt");
+	rename(temf, fname);
 	//sdisplay2(tem);
 	sdisplay2(tem);
 	int choice;
@@ -118,6 +121,7 @@ void search2(void)
 		}
 	}
 	current->next = NULL;
+	fclose(fp);
 	//head=sort(head);
 	while(choice!=6)
 	{
@@ -183,10 +187,11 @@ void search2(void)
 			}
 			first = totalsort(first);
 			printf("\n");
+			printf("学院\t\t团体总分\t排名\t\n");
 			for (a = 1,p = first; p != NULL;a++)
 			{
 				color(a);
-				printf("%s\t%d\n", first->coll, first->score);
+				printf("%s\t%d\t%10d\n", first->coll, first->score,a);
 				color(4);
 				first = p->next;
 				free(p);
@@ -211,22 +216,33 @@ void search2(void)
 			a = 1;
 			while (a == 1)
 			{
-				printf("请输入要查询的学院名称：\n");
+				printf("请输入要查询的学院名称：\n\n");
 				s_gets(scoll, 40);
 				current = head;
+				printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
+				rank = 1;
 				while (current != NULL)
 				{
 					if (strcmp(current->coll, scoll) == 0)
 					{
 						if (a == 1)
-							printf("\n");
-						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+							printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
+						if (strcmp(current->item, rankitem) != 0)
+							rank = 1;
+						else
+						{
+							if ((current->mark % 100) / 10 != 3 && (current->mark % 100) / 10 != 4)
+								rank++;
+						}
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,rank);
 						a++;
+						strcpy(rankitem, current->item);
 					}
 					current = current->next;
 				}
 				if (a == 1)
 					printf("没有此学院，请检查后重新输入\n");
+				strcpy(rankitem, "a");
 				printf("\n继续进行学院查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
 				scanf("%d", &a);
 				switch (a)
@@ -249,22 +265,32 @@ void search2(void)
 			a = 1;
 			while (a == 1)
 			{
-				printf("请输入姓名：\n");
+				printf("请输入姓名：\n\n");
 				s_gets(sname, 40);
 				current = head;
+				rank = 1;
 				while (current != NULL)
 				{
 					if (strcmp(current->name, sname) == 0)
 					{
 						if (a == 1)
-							printf("\n");
-						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+							printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
+						if (strcmp(current->item, rankitem) != 0)
+							rank = 1;
+						else
+						{
+							if ((current->mark % 100) / 10 != 3 && (current->mark % 100) / 10 != 4)
+								rank++;
+						}
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,rank);
 						a++;
+						strcpy(rankitem, current->item);
 					}
 					current = current->next;
 				}
 				if (a == 1)
 					printf("查无此人\n");
+				strcpy(rankitem, "a");
 				printf("\n继续进行姓名查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
 				scanf("%d", &a);
 				switch (a)
@@ -287,7 +313,7 @@ void search2(void)
 			a = 1;
 			while (a == 1)
 			{
-				printf("请输入项目名称(带性别，如男子跳高、女子跳远)：\n");
+				printf("请输入项目名称(带性别，如男子跳高、女子跳远)：\n\n");
 				s_gets(sitem, 30);
 				current = head;
 				while (current != NULL)
@@ -295,22 +321,9 @@ void search2(void)
 					if (strcmp(current->item, sitem) == 0)
 					{
 						if (a == 1)
-							printf("\n");
-						if (current->mark % 10 == 7)
-							color(1);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
-							color(1);
-						else if (current->mark / 100 == 5 && current->mark % 10 == 5)
-							color(2);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
-							color(2);
-						else if (current->mark / 100 == 5 && current->mark % 10 == 3)
-							color(3);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 2)
-							color(3);
-						else
-							color(4);
-						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+							printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
+						color(a);
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,a);
 						color(4);
 						a++;
 					}
@@ -337,8 +350,9 @@ void search2(void)
 		break;
 		case 5://输出该届全部成绩
 		{
-			char mitem[30][30] = { 'a' };
+			char mitem[30][30] = { 'a' }, rankcoll[30];
 			int n = 0, i;
+			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 			current = head;
 			strcpy(mitem[0], current->item);
 			while (current != NULL)
@@ -359,28 +373,22 @@ void search2(void)
 			}
 			for (current = head, i = 0; current != NULL && i < n + 1; i++)
 			{
-				for (; current != NULL;)
+				for (rank = 1,a = 1; current != NULL;)
 				{
 					if (strcmp(mitem[i], current->item) == 0)
 					{
-						if (current->mark % 10 == 7)
-							color(1);
-						if (current->mark % 10 == 7)
-							color(1);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
-							color(1);
-						else if (current->mark / 100 == 5 && current->mark % 10 == 5)
-							color(2);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 3)
-							color(2);
-						else if (current->mark / 100 == 5 && current->mark % 10 == 3)
-							color(3);
-						else if (current->mark / 100 == 3 && current->mark % 10 == 2)
-							color(3);
-						else
-							color(4);
-						printf("%s\t%s\t%s\t%s\t%.2f\n", current->name, current->sex, current->coll, current->item, current->score);
+						if (a != 1)
+						{
+							if (((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4) && strcmp(rankcoll, current->coll) != 0)
+								rank++;
+						}
+						color(rank);
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,rank);
 						color(4);
+						strcpy(rankcoll, current->coll);
+						if ((current->mark % 100) / 10 != 3 && (current->mark % 100) / 10 != 4)
+							rank++;
+						a++;
 					}
 					current = current->next;
 				}
@@ -404,16 +412,16 @@ void search2(void)
 		case 7:exit(0);
 		}
 	}
-	fclose(fp);
+	chainfree(head);
 }
 void seacol(char *colname)
 {
 
 	long Handle;
 	FILE *fp;
-	char scname[40], scsex[5], scitem[30], sccol[40], str[20];
+	char scname[40], scsex[5], scitem[30], sccol[40], str[20], rankitem[30];
 	float scsco;
-	int  scmark;
+	int  scmark, rank;
 	struct _finddata_t FileInfo;
 
 	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)
@@ -428,13 +436,23 @@ void seacol(char *colname)
 		strcpy(str, FileInfo.name);
 		killdot(str);
 		printf("%s:\n", str);
+		printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 		fp = fopen(FileInfo.name, "r + ");
+		rank = 1;
 		while (!feof(fp))
 		{
 			if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
 				break;
+			if (strcmp(scitem, rankitem) != 0)
+				rank = 1;
+			else
+			{
+				if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+					rank++;
+			}
 			if (strcmp(sccol, colname) == 0)
-				printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+				printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco, rank);
+			strcpy(rankitem, scitem);
 		}
 		fclose(fp);
 		//printf('\n');
@@ -444,15 +462,26 @@ void seacol(char *colname)
 			strcpy(str, FileInfo.name);
 			killdot(str);
 			printf("%s:\n", str);
+			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 			fp = fopen(FileInfo.name, "r+");
+			rank = 1;
 			while (!feof(fp))
 			{
 				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
 					break;
+				if (strcmp(scitem, rankitem) != 0)
+					rank = 1;
+				else
+				{
+					if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+						rank++;
+				}
 				if (strcmp(sccol, colname) == 0)
-					printf("%s\t%s\t%s\t%s\t%.2f\n", scname, scsex, sccol, scitem, scsco);
+					printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco, rank);
+				strcpy(rankitem, scitem);
 			}
 			fclose(fp);
+			while (getchar() != '\n');
 			//printf('\n');
 		}
 		_findclose(Handle);
@@ -480,6 +509,8 @@ void seaname(char *stuname)
 		//printf("%s\n", FileInfo.name);
 		strcpy(str, FileInfo.name);
 		killdot(str);
+		printf("%s:\n", str);
+		printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 		//printf("%s:\n", str);
 		fp = fopen(FileInfo.name, "r + ");
 		rank = 1;
@@ -490,12 +521,13 @@ void seaname(char *stuname)
 			if (strcmp(scitem, rankitem) != 0)
 				rank = 1;
 			else
-				rank++;
+			{
+				if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+					rank++;
+			}
 			if (strcmp(scname, stuname) == 0)
 			{
-				printf("%s:\n", str);
-				printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
-				printf("%s\t%s\t%s\t%s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco,rank);
+				printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco,rank);
 			}
 			strcpy(rankitem, scitem);
 		}
@@ -507,6 +539,8 @@ void seaname(char *stuname)
 			strcpy(str, FileInfo.name);
 			killdot(str);
 			//printf("%s:\n", str);
+			printf("%s:\n", str);
+			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 			fp = fopen(FileInfo.name, "r+");
 			rank = 1;
 			while (!feof(fp))
@@ -516,12 +550,13 @@ void seaname(char *stuname)
 				if (strcmp(scitem, rankitem) != 0)
 					rank = 1;
 				else
-					rank++;
+				{
+					if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+						rank++;
+				}
 				if (strcmp(scname, stuname) == 0)
 				{
-					printf("%s:\n", str);
-					printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
-					printf("%s\t%s\t%s\t%s\t%.2f%d\n", scname, scsex, sccol, scitem, scsco,rank);
+					printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco,rank);
 				}
 				strcpy(rankitem, scitem);
 			}

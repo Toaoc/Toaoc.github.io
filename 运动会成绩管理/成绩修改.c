@@ -9,7 +9,11 @@ struct stu *read(char a[])                                   /*º¯Êý£º¶ÁÈ¡ÎÄ¼þ²¢½
 	stu *head;
 	stu *p1, *p2;
 	FILE *fp;
-	a = strcat(a, ".txt");
+	char a1[20];
+	strcpy(a1, a);
+	strcat(a1, "c.txt");
+	strcat(a, ".txt");
+	rename(a1, a);
 	if ((fp = fopen(a, "r+")) == NULL)
 	{
 		printf("ÎÞ·¨´ò¿ªÎÄ¼þ\n");
@@ -19,7 +23,6 @@ struct stu *read(char a[])                                   /*º¯Êý£º¶ÁÈ¡ÎÄ¼þ²¢½
 	p1 = p2 = (stu *)malloc(sizeof(stu));
 	head = NULL;
 	fscanf(fp, "%s	%s	%s	%s	%f	%d", p1->name, p1->sex, p1->coll, p1->item, &p1->score, &p1->mark);
-	printf("%s	%s	%s	%s	%.2f	%d\n", p1->name, p1->sex, p1->coll, p1->item, p1->score, p1->mark);
 	while (p1->score >= 0 && p1->score <= 100)
 	{
 		n = n + 1;

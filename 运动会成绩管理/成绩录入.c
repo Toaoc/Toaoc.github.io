@@ -4,7 +4,6 @@
 #include<Windows.h>
 #include "cjgl.h"
 void wdisplay(void);
-char *s_gets1(char *st, int n);
 void ensex(char *witem,char *wsex);
 void singlewrite(char*fname);
 void teamwrite(char*fname);
@@ -98,7 +97,7 @@ void singlewrite(char *fname)
 		printf("该项目是的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n");
 		scanf("%d", &b);
 		printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
-		while (s_gets1(wname, 45) != NULL && wname[0] != '\0')
+		while (s_gets(wname, 45) != NULL && wname[0] != '\0')
 		{
 			current = (stu*)malloc(sizeof(stu));
 			if (head == NULL)
@@ -287,7 +286,7 @@ void teamwrite(char*fname)
 		//printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
 		printf("请输入%s参赛学院的名称：\n", witem);
 		getchar();
-		while (s_gets1(wcoll, 45) != NULL && wcoll[0] != '\0')
+		while (s_gets(wcoll, 45) != NULL && wcoll[0] != '\0')
 		{
 			if (3 == b || 4 == b)
 			{
@@ -302,7 +301,7 @@ void teamwrite(char*fname)
 			}
 			printf("请输入%s的选手：\n", wcoll);
 			getchar();
-			while (s_gets1(wname,40) != NULL && wname[0] != '\0')
+			while (s_gets(wname,45) != NULL && wname[0] != '\0')
 			{
 				current = (stu*)malloc(sizeof(stu));
 				if (head == NULL)
@@ -444,18 +443,4 @@ int get2(char *str)
 	}
 	str[i] = '\0';
 	return i;
-}
-char *s_gets1(char *st, int n)
-{
-	char *re, *find;
-	char c;
-	//while ((c = getchar() != '\n') && c != EOF);
-	re = fgets(st, n, stdin);
-	if (re)
-	{
-		find = strchr(st, '\n');
-		if (find)
-			*find = '\0';
-	}
-	return re;
 }

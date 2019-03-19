@@ -6,7 +6,8 @@ char *s_gets(char *st, int n)
 {
 	char *re, *find;
 	char c;
-	while ((c = getchar() != '\n') && c != EOF);
+	if (n % 10 == 0)
+		while ((c = getchar() != '\n') && c != EOF);
 	re = fgets(st, n, stdin);
 	if (re)
 	{
@@ -116,10 +117,10 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 	p = NULL;
 	first = NULL;
 	prev = NULL;
-	fname1[0] = 'c';
-	fname1[1] = '\0';
-	strcat(fname1, fname);
-	rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
+	strcpy(fname1, fname);
+	for (i = 0; fname1[i] != '.'; i++);
+	fname1[i] = '\0';
+	strcat(fname1, "c.txt");
 	rename(fname, fname1);
 	fp = fopen(fname, "w+");
 	for (i = 0, current = head, before = head; strcmp(xiuitem[i], "a") != 0; before = current, current = current->next)
