@@ -93,10 +93,13 @@ void singlewrite(char *fname)
 			exit(EXIT_FAILURE);
 		}
 		printf("请输入该项目的获奖名次：\n");
-		scanf("%d", &a);
+		while (scanf("%d", &a) != 1||(a != 3 && a != 5))
+			printf("输入错误，请重新要取的名次\n");
 		printf("该项目是的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n");
-		scanf("%d", &b);
+		while (scanf("%d", &b) != 1 || (b != 1 && b != 2))
+			printf("输入错误，请重新输入\n");
 		printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
+		getchar();
 		while (s_gets(wname, 45) != NULL && wname[0] != '\0')
 		{
 			current = (stu*)malloc(sizeof(stu));
@@ -113,7 +116,8 @@ void singlewrite(char *fname)
 			printf("请输入%s所属学院：\n", wname);
 			scanf("%s", current->coll);
 			printf("请输入%s的成绩：\n", wname);
-			scanf("%f", &current->score);
+			while (scanf("%f", &current->score) != 1)
+				printf("输入错误，请重新输入\n");
 			current->mark = 100 * a + 10 * b;
 			printf("录入成功！\n");
 			prev = current;
@@ -270,9 +274,13 @@ void teamwrite(char*fname)
 			exit(EXIT_FAILURE);
 		}
 		printf("请输入%s的获奖名次：\n", witem);
-		scanf("%d", &a);
+		while (scanf("%d", &a) != 1 || (a != 3 && a != 5))
+			printf("输入错误，请重新要取的名次\n");
+		//scanf("%d", &a);
 		printf("%s的1-%d名是否按数值成绩统一排名：\n1、是\n2、否\n", witem, a);
-		scanf("%d", &c);
+		while (scanf("%d", &c) != 1 || (c != 1 && c != 2))
+			printf("输入错误，请重新输入\n");
+		//scanf("%d", &c);
 		if (1 == c)
 			b = c + 1;
 		else
@@ -280,7 +288,8 @@ void teamwrite(char*fname)
 		if (2 == b)
 		{
 			printf("%s的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n", witem);
-			scanf("%d", &c);
+			while (scanf("%d", &c) != 1 || (c != 1 && c != 2))
+				printf("输入错误，请重新输入\n");
 			b = b + c;
 		}
 		//printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
@@ -291,12 +300,15 @@ void teamwrite(char*fname)
 			if (3 == b || 4 == b)
 			{
 				printf("请输入%s的成绩：\n", wcoll);
-				scanf("%f", &wscore);
+				while (scanf("%f", &wscore) != 1)
+					printf("输入错误，请重新输入\n");
+				//scanf("%f", &wscore);
 			}
 			else
 			{
 				printf("请输入%s获得的名次：\n", wcoll);
-				scanf("%f", &wscore);
+				while (scanf("%f", &wscore) != 1)
+					printf("输入错误，请重新输入\n");
 				b = 4;
 			}
 			printf("请输入%s的选手：\n", wcoll);
