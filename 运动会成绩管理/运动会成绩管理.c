@@ -5,9 +5,11 @@
 #include<conio.h>
 #include "cjgl.h"
 void display(void);
+void display0(void);
 int main(void)
 {
 	system("color F0");
+	display0();
 	int a = 0;
 	while (a != 5)
 	{
@@ -32,7 +34,7 @@ int main(void)
 	return 0;
 
 }
-void display(void)
+void display0(void)
 {
 	color(0);
 	printf("			        *  *                  *  *                  *  *         \n");
@@ -51,6 +53,9 @@ void display(void)
 	printf("					******************************\n					*                            *\n					* 欢迎使用运动会成绩管理系统 * \n					*                            *\n					******************************");
 	printf("\n\n						--→Enter进入←--");
 	while (_getch() != 13);
+}
+void display(void)
+{
 	system("cls");
 	printf("\n***********************运动会成绩管理系统*********************\n\n");
 	printf("\t\t\t|1.成绩查询\n");
