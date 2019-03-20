@@ -110,7 +110,7 @@ struct stu *minsort(stu *head)//该函数是从1个逐渐拉到多个的排法
 void wrifile(stu *head, char *fname, char xiuitem[][30])
 {
 	stu *current, *p, *first, *prev, *before;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a'};
 	float wscore;
 	int wmark, i, j;
 	FILE *fp;
@@ -125,15 +125,15 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 	fp = fopen(fname, "w+");
 	for (i = 0, current = head, before = head; strcmp(xiuitem[i], "a") != 0; before = current, current = current->next)
 	{
-		if (current != NULL)
-		{
-			printf("%s\n", current->item);
-		}
 		if (current == NULL)
 		{
-			printf("NULL\n");
+			if (first == NULL)
+			{
+				p = head;
+				break;
+			}
 			p->next = NULL;
-			printf("%s\t%s\n", first->name, p->name);
+			//printf("%s\t%s\n", first->name, p->name);
 			current = head;
 			i++;
 		}
@@ -150,7 +150,7 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 			for (p = first; p != NULL; p = p->next)
 			{
 				fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
-				printf(" %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
+				//printf(" %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 			}
 			chainfree(first);
 			first = NULL;

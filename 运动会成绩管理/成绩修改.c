@@ -65,17 +65,14 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 			{
 				system("cls");
 				printf("\n %s	%s	%s	%s	%.2f	\n\n", p->name, p->sex, p->coll, p->item, p->score );
-				printf("\n ************************************** \n *   1、修改姓名	2、修改性别   * \n *   3、修改学院	4、修改项目   * \n *   5、修改分数	0、退出程序   * \n ************************************** \n\n请选择想要修改的内容：\n\n");
+				printf("\n ************************************** \n *   1、修改姓名	2、修改学院   * \n *   3、修改成绩 	 0、退出程序   * \n ************************************** \n\n请选择想要修改的内容：\n\n");
 				scanf("%d", &b);
-				if (b == 0)
-					exit(0);
 				switch (b)
 				{
+				case 0:exit(0); break;
 				case 1:printf("\n 修改为："); scanf("%s", &p->name); p = p->next; break;
-				case 2:printf("\n 修改为："); scanf("%s", &p->sex); p = p->next; break;
-				case 3:printf("\n 修改为："); scanf("%s", &p->coll); p = p->next; break;
-				case 4:printf("\n 修改为："); scanf("%s", &p->item); p = p->next; break;
-				case 5:
+				case 2:printf("\n 修改为："); scanf("%s", &p->coll); p = p->next; break;
+				case 3:
 				{
 					printf("\n 修改为："); scanf("%f", &p->score);
 					for (; i < 30 && strcmp(p->item, g[i]) != 0; i++)
@@ -100,14 +97,16 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 		{
 			do
 			{
-				y = 0;
 				printf("\n ****************************************\n *   1、是	2、否	0、退出程序     * \n ****************************************\n是否继续修改：\n\n");
+				//printf("\n%d\t%s\t%s\n", i, g[i], g[i + 1]);
 				scanf("%d", &c);
-				if (c != 0 && c != 1 && c != 2)
-					y++;
-				if (y != 0)
-					printf("\n请输入0、1、2继续程序\n");
-
+				switch (c)
+				{
+				case 0:exit(0);
+				case 1:break;
+				case 2:break;
+				default:printf("\n请输入0、1、2继续程序\n"); break;
+				}
 			} while (c != 0 && c != 1 && c != 2);
 			if (c == 0)
 				exit(0);
@@ -130,11 +129,11 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 		}
 	} while (c == 1);
 	system("cls");
-	while (pt != NULL)
+	/*while (pt != NULL)
 	{
 		printf("%s	%s	%s	%s	%.2f	%d\n", pt->name, pt->sex, pt->coll, pt->item, pt->score, pt->mark);
 		pt = pt->next;
-	}
+	}*/
 	do
 	{
 		y = 0;
@@ -147,22 +146,28 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 
 	} while (b != 0 && b != 1 && b != 2);
 	FILE *fp;
-	if ((fp = fopen(a, "w")) == NULL)
-	{
-		system("cls");
-		printf("无法打开文件\n");
-		exit(0);
-	}
+	
 	if (b == 0)
 		exit(0);
-	if (b == 1)
+	if (strcmp(g[i+1],"a")==0)
 	{
 		wrifile(p4, u, g);
 	}
-	for (; pt != NULL; pt = ch)
+	else
 	{
-		ch = pt->next;
-		free(pt);
+		if ((fp = fopen(u, "w")) == NULL)
+		{
+			system("cls");
+			printf("无法打开文件\n");
+			exit(1);
+		}
+		for (p = p4; p != NULL; p = p->next)
+		{
+			fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
+			//fprintf(stdout, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
+		}
+		chainfree(p4);
+
 	}
 }
 void alter(void)
