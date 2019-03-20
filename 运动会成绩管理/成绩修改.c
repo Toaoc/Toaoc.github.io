@@ -9,11 +9,7 @@ struct stu *read(char a[])                                   /*º¯Êý£º¶ÁÈ¡ÎÄ¼þ²¢½
 	stu *head;
 	stu *p1, *p2;
 	FILE *fp;
-	char a1[20];
-	strcpy(a1, a);
-	strcat(a1, "c.txt");
-	strcat(a, ".txt");
-	rename(a1, a);
+	correctfile(a);
 	if ((fp = fopen(a, "r+")) == NULL)
 	{
 		printf("ÎÞ·¨´ò¿ªÎÄ¼þ\n");

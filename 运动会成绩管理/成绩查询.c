@@ -82,15 +82,18 @@ void search2(void)
 	FILE *fp;
 	int a, rank;
 	char ch;
-	char sname[40], tem[15], fname[30], scoll[40], sitem[30], rankitem[30], temf[15];
+	char sname[40], tem[15], fname[30], scoll[40], sitem[30], rankitem[30] ;
 	system("cls");
 	printf("请输入要查询的届数：\n");
 	scanf("%s",tem);
 	strcpy(fname, tem);
-	strcpy(temf, tem);
-	strcat(temf, "c.txt");
-	strcat(fname, ".txt");
-	rename(temf, fname);
+	correctfile(fname);
+	fp = fopen(fname, "r");
+	if (fp == NULL)
+	{
+		printf("文件不存在或无法打开\n");
+		exit(EXIT_FAILURE);
+	}
 	//sdisplay2(tem);
 	sdisplay2(tem);
 	int choice;
@@ -99,12 +102,6 @@ void search2(void)
 	current = NULL;
 	head = NULL;
 	prev = NULL;
-	fp = fopen(fname, "r");
-	if (fp == NULL)
-	{
-		printf("文件无法打开\n");
-		exit(EXIT_FAILURE);
-	}
 	while (!feof(fp))
 	{
 		current = (stu*)malloc(sizeof(stu));

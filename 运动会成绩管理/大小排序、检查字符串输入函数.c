@@ -112,7 +112,7 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 	stu *current, *p, *first, *prev, *before;
 	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a'};
 	float wscore;
-	int wmark, i, j;
+	int wmark, i, j, count[3] = { 0 };
 	FILE *fp;
 	p = NULL;
 	first = NULL;
@@ -122,8 +122,8 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 	fname1[i] = '\0';
 	strcat(fname1, "c.txt");
 	rename(fname, fname1);
-	fp = fopen(fname, "w+");
-	for (i = 0, current = head, before = head; strcmp(xiuitem[i], "a") != 0; before = current, current = current->next)
+	fp = fopen(fname, "w");
+	for (i = 0, current = head, before = head; strcmp(xiuitem[i], "a") != 0; current = current->next)
 	{
 		if (current == NULL)
 		{
@@ -158,6 +158,10 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 		}
 		if (strcmp(xiuitem[i], current->item) == 0)
 		{
+			if (head == current)
+				head = head->next;
+			else
+				count[1]++;
 			if (first == NULL)
 			{
 				first = current;
@@ -167,16 +171,33 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 				p->next = current;
 			}
 			p = current;
-			if (head == current)
-				head = head->next;
-			else
-				before->next = current->next;
 		}
+		if (current == head)
+			before = head;
+		else if (count[2] == count[1])
+		{
+			if(count[0]==0)
+				before = before->next;
+			else
+			{
+				before->next = current->next;
+				before = current->next;
+				count[0] = 0;
+			}
+		}
+		else if(count[2] != count[1])
+		{
+			count[0]++;
+		}
+		count[2] = count[1];
 	}
 	for (p = head; p != NULL; p = p->next)
 	{
 		fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
+		//printf(" %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 	}
+	getchar();
+	getchar();
 	chainfree(head);
 	fclose(fp);
 	remove(fname1);

@@ -84,7 +84,8 @@ void singlewrite(char *fname)
 	}
 	while (1)
 	{
-		rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
+		i=rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
+		printf("%d\n", i);
 		rename(fname, fname1);
 		fp = fopen(fname1, "a+");
 		if (fp == NULL)

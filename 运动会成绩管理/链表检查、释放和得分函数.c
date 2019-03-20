@@ -1,3 +1,4 @@
+#include<io.h>
 #include<stdio.h>
 #include "cjgl.h"
 #include<stdlib.h>
@@ -21,7 +22,7 @@ void chaincheck(struct stu*head)
 	p = head;
 	while (p != NULL)
 	{
-		printf("\n%s%s%s%s%.2f%d\n", p->name, p->sex, p->coll, p->item, p->score, p->mark);
+		printf("\n%s %s %s %s %.2f %d\n", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 		p = p->next;
 	}
 }
@@ -114,5 +115,18 @@ void color(short int x)
 		break;
 	default: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 240);
 		break;
+	}
+}
+void correctfile(char *fname)
+{
+	char ofname[20];
+	int i;
+	strcpy(ofname, fname);
+	strcat(ofname, "c.txt");
+	strcat(fname, ".txt");
+	if (_access(ofname, 0) == 0)
+	{
+		remove(fname);
+		rename(ofname, fname);
 	}
 }

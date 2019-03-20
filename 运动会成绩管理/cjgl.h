@@ -25,6 +25,7 @@ void chainfree(struct stu * head);
 struct stu *maxsort(struct stu * head);
 void color(short int x);
 char *s_gets(char *st, int n);
+void correctfile(char *fname);
 
 #endif // !_CJGL_H
 
