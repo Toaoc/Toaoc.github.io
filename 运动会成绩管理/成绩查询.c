@@ -70,7 +70,7 @@ void sdisplay2(char tem[])
 {
 	system("cls");
 	printf("\t\t\t1、%s届学院总分报表查询\n",tem);
-	printf("\t\t\t2、%s届学院成绩查询\n",tem);
+	printf("\t\t\t2、%s届各学院成绩查询\n",tem);
 	printf("\t\t\t3、%s届个人成绩查询\n",tem);
 	printf("\t\t\t4、%s届各项目成绩查询\n",tem);
 	printf("\t\t\t5、%s届全部成绩\n",tem);
@@ -83,7 +83,7 @@ void search2(void)
 	FILE *fp;
 	int a, rank;//rank用于输出排名
 	char ch;
-	char sname[40], tem[15], fname[30], scoll[40], sitem[30], rankitem[30] ;//带s的用于临时储存，rankitem用于记录要排名的项目
+	char sname[40], tem[15], fname[30], scoll[40], sitem[30], rankitem[30] ,rankcoll[30];//带s的用于临时储存，rankitem用于记录要排名的项目
 	system("cls");
 	printf("请输入要查询的届数：\n");
 	scanf("%s",tem);
@@ -213,35 +213,58 @@ void search2(void)
 		break;
 		case 2://按学院进行查询
 		{
+			int count[3] = { 0 };
+			strcpy(rankcoll, "a");
 			a = 1;//作为记录文件是否有所要查询的内容，并作为判断条件
 			while (a == 1)
 			{
 				printf("请输入要查询的学院名称：\n\n");
 				s_gets(scoll, 40);
 				current = head;
-				printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
 				rank = 1;
 				while (current != NULL)//从链表中寻找
 				{
-					if (strcmp(current->coll, scoll) == 0)//防止团体项目排名全部一样
+					if (strcmp(current->item, rankitem) != 0)
+						rank = 1;//换了项目，重置排名
+					else
 					{
-						if (a == 1)
-							printf("姓名\t性别\t学院\t项目\t成绩\t排名\n");
-						if (strcmp(current->item, rankitem) != 0)
-							rank = 1;//换了项目，重置排名
+						if ((current->mark % 100) / 10 != 3 && (current->mark % 100) / 10 != 4)
+							rank++;//用于记录排名
 						else
 						{
-							if ((current->mark % 100) / 10 != 3 && (current->mark % 100) / 10 != 4)
-								rank++;//用于记录排名
+							if (strcmp(rankcoll, current->coll) != 0)
+								rank++;
 						}
-						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,rank);
-						a++;
-						strcpy(rankitem, current->item);
 					}
+					if (strcmp(current->coll, scoll) == 0)
+					{
+						if (a == 1)
+							printf("姓名\t性别\t学院\t项目\t成绩\t\t排名\n");
+						if (rank < 4)
+						{
+							if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)
+							{
+								if (strcmp(current->coll, rankcoll) != 0)
+									count[rank - 1]++;
+							}
+							else
+								count[rank - 1]++;
+						}
+						color(rank);
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", current->name, current->sex, current->coll, current->item, current->score,rank);
+						color(4);
+						a++;
+					}
+					strcpy(rankcoll, current->coll);
+					strcpy(rankitem, current->item);
 					current = current->next;
 				}
 				if (a == 1)
 					printf("没有此学院，请检查后重新输入\n");
+				else
+				{
+					printf("共获得第一名%d项，第二名%d项，第三名%d项\n",count[0],count[1],count[2]);
+				}
 				strcpy(rankitem, "a");
 				printf("\n继续进行学院查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
 				while (scanf("%d", &a) != 1)
@@ -353,7 +376,7 @@ void search2(void)
 		break;
 		case 5://输出该届全部成绩
 		{
-			char rankcoll[30];//用于记录前一个链节学院
+			strcpy(rankcoll, "a");
 			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 			strcpy(rankitem, "a");
 			for (rank = 1,current = head; current != NULL; current = current->next)
