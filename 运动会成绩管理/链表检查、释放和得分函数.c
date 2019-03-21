@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<Windows.h>
-void chainfree(struct stu *head)
+void chainfree(struct stu *head)//用于释放链表
 {
 	stu *current;
 	current = head;
@@ -26,13 +26,13 @@ void chaincheck(struct stu*head)
 		p = p->next;
 	}
 }
-void goal3(struct stu*head)
+void goal3(struct stu*head)//只取前3名的赋分函数
 {
 	stu  *current, *prev;
 	int a;
 	for (prev = current = head, a = 1; current != NULL; prev=current,current = current->next)
 	{
-		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)
+		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)//团体项目的赋分方式，等于其前一个
 		{
 			if ((current != head) && (strcmp(current->coll, prev->coll) == 0))
 			{
@@ -59,13 +59,13 @@ void goal3(struct stu*head)
 		a++;
 	}
 }
-void goal5(struct stu*head)
+void goal5(struct stu*head)//取前5名的赋分函数
 {
 	stu  *current, *prev;
 	int a;
 	for (prev = current = head, a = 1; current != NULL; prev=current,current = current->next)
 	{
-		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)
+		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)//团体项目的赋分
 		{
 			if ((current != head)&& (strcmp(current->coll, prev->coll) == 0))
 			{
@@ -101,11 +101,11 @@ void goal5(struct stu*head)
 		
 	}
 }
-void color(short int x)
-{        /*仅限改变0-15的颜色;如果在0-15那么实现他的颜色   因为如果超过15后面的改变的是文本背景色。*/
+void color(short int x)//成绩查询时给前3名来的特效以及封面的五环颜色
+{
 	switch (x)
 	{
-	case 0: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 505);
+	case 0: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 505);//五环颜色
 		break;
 	case 1: SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 758);
 		break;
@@ -117,7 +117,7 @@ void color(short int x)
 		break;
 	}
 }
-void correctfile(char *fname)
+void correctfile(char *fname)//将文件名纠正的函数，录入、修改、删除时若不正常退出，会产生中间文件，该函数将其纠正
 {
 	char ofname[20];
 	int i;

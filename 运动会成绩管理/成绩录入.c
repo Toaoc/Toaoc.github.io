@@ -126,7 +126,7 @@ void singlewrite(char *fname)
 		rewind(fp);//将指针回调到开头，
 		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		i = 0;
-		while (!feof(fp))
+		while (!feof(fp))//从文件中读取同项目到该链表中
 		{
 			if (!feof(fp))
 				fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
@@ -153,8 +153,7 @@ void singlewrite(char *fname)
 			//fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		}
 		current->next = NULL;
-		//chaincheck(head);
-		if ((head->mark % 100) / 10 == 1)
+		if ((head->mark % 100) / 10 == 1)//对链表进行排名并赋分
 		{
 			head = maxsort(head);
 			if (head->mark / 100 == 3)
@@ -172,15 +171,11 @@ void singlewrite(char *fname)
 
 		}
 		nf = fopen(fname, "w");
-		//chaincheck(head);
-		for (current = head; current != NULL; current = current->next)
+		for (current = head; current != NULL; current = current->next)//将链表里的内容写入到新文件中
 		{
 			fprintf(nf, " %s %s %s %s %.2f %d ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
-			//printf("%s %s %s %s %.2f %d\n ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
-			//fflush(fp);
-
 		}
-		rewind(fp);
+		rewind(fp);//将文件指针回调开始读取其他内容
 		while (!feof(fp))
 		{
 			if (fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark) != 6)
@@ -192,8 +187,7 @@ void singlewrite(char *fname)
 			}
 			if (j == 0)
 			{
-				fprintf(nf, " %s %s %s %s %.2f %d ", wname, wsex, wcoll, witem, wscore, wmark);
-				printf("\n %s %s %s %s %.2f %d \n", wname, wsex, wcoll, witem, wscore, wmark);
+				fprintf(nf, " %s %s %s %s %.2f %d ", wname, wsex, wcoll, witem, wscore, wmark);//将其他内容写入到新文件中
 				fflush(fp);
 			}
 			while ((ch = getc(fp)) == ' ');//吃掉空格，便于判断文件末尾
@@ -202,16 +196,16 @@ void singlewrite(char *fname)
 				fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
 			}
 		}
-		chainfree(head);
+		chainfree(head);//释放链表
 		head = NULL;
 		fclose(fp);
 		fclose(nf);
-		remove(fname1);
+		remove(fname1);//将中间文件去除
 		printf("请输入所要录入的项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m跳远、\033[1;31;47m女子\033[0m跳高），空行结束输入：\n");
 		n = get2(witem);
-		if (n == 0)
+		if (n == 0)//n=0即表示用户直接按下了回车键
 			break;
-		for (k = 0;; k++)
+		for (k = 0;; k++)//判断并读取性别
 		{
 			if (k > 0)
 			{
@@ -228,31 +222,20 @@ void singlewrite(char *fname)
 	}
 
 }
-void teamwrite(char*fname)
+void teamwrite(char*fname)//团体项目录入
 {
-	//system("cls");
-	//printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };//带w的都是用于临时储存的
 	int a, b, wmark, i, j, k, n, c;
 	float wscore;
 	head = NULL;
 	prev = NULL;
 	current = NULL;
-	//printf("请输入运动会届数：\n");
-	//scanf("%s", fname);
 	strcpy(fname1, fname);
 	strcat(fname1, "c.txt");
 	strcat(fname, ".txt");
-	//rename(fname, fname1);
-	/*fp = fopen(fname, "a+");
-	if (fp == NULL)
-	{
-		printf("文件打开错误！\n");
-		exit(EXIT_FAILURE);
-	}*/
-	for (k = 0; k != -1; k++)
+	for (k = 0; k != -1; k++)//读取项目并判断性别
 	{
 		printf("请输入所要录入的团体项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m篮球、\033[1;31;47m女子\033[0m足球）：\n");
 		scanf("%s", witem);
@@ -264,9 +247,9 @@ void teamwrite(char*fname)
 	}
 	while (1)
 	{
-		rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
-		rename(fname, fname1);
-		fp = fopen(fname1, "a+");
+		rename(fname1, fname);
+		rename(fname, fname1);//将原文件改成中间文件
+		fp = fopen(fname1, "r");
 		if (fp == NULL)
 		{
 			printf("文件打开错误！\n");
@@ -275,15 +258,13 @@ void teamwrite(char*fname)
 		printf("请输入%s的获奖名次：\n", witem);
 		while (scanf("%d", &a) != 1 || (a != 3 && a != 5))
 			printf("输入错误，请重新要取的名次\n");
-		//scanf("%d", &a);
 		printf("%s的1-%d名是否按数值成绩统一排名：\n1、是\n2、否\n", witem, a);
 		while (scanf("%d", &c) != 1 || (c != 1 && c != 2))
 			printf("输入错误，请重新输入\n");
-		//scanf("%d", &c);
 		if (1 == c)
 			b = c + 1;
 		else
-			b = 5;
+			b = 5;//赋值为5用于躲过下面几句输出
 		if (2 == b)
 		{
 			printf("%s的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n", witem);
@@ -291,12 +272,11 @@ void teamwrite(char*fname)
 				printf("输入错误，请重新输入\n");
 			b = b + c;
 		}
-		//printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
 		printf("请输入%s参赛学院的名称：\n", witem);
 		getchar();
 		while (s_gets(wcoll, 45) != NULL && wcoll[0] != '\0')
 		{
-			if (3 == b || 4 == b)
+			if (3 == b || 4 == b)//3为从大到小排，4为从小到大排
 			{
 				printf("请输入%s的成绩：\n", wcoll);
 				while (scanf("%f", &wscore) != 1)
@@ -308,10 +288,10 @@ void teamwrite(char*fname)
 				printf("请输入%s获得的名次：\n", wcoll);
 				while (scanf("%f", &wscore) != 1)
 					printf("输入错误，请重新输入\n");
-				b = 4;
+				b = 4;//将b改回为4，4即为从小到大排
 			}
 			printf("请输入%s的选手：\n", wcoll);
-			getchar();
+			getchar();//用于读取缓存的换行符，便于判断
 			while (s_gets(wname,45) != NULL && wname[0] != '\0')
 			{
 				current = (stu*)malloc(sizeof(stu));
@@ -319,20 +299,12 @@ void teamwrite(char*fname)
 					head = current;
 				else
 					prev->next = current;
-				strcpy(current->coll, wcoll);
+				strcpy(current->coll, wcoll);//将临时读取的写入到链表中
 				strcpy(current->item, witem);
 				strcpy(current->sex, wsex);
 				strcpy(current->name, wname);
 				current->score = wscore;
-				//printf("%s\n", current->sex);
-				/*printf("请输入%s的性别：\n", wname);
-				scanf("%s", current->sex);*/
-				/*printf("请输入%s的选手：\n", wcoll);
-				scanf("%s", current->coll);*/
-				/*printf("请输入%s的成绩：\n", wcoll);
-				scanf("%f", &current->score);*/
 				current->mark = 100 * a + 10 * b;
-				//printf("录入成功！\n");
 				prev = current;
 				printf("请输入%s另一选手的姓名（空行结束输入）：\n", wcoll);
 			}
@@ -340,17 +312,15 @@ void teamwrite(char*fname)
 		}
 
 		rewind(fp);
-		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
+		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);//先尝试读取，便于判断文件末尾
 		i = 0;
-		while (!feof(fp))
+		while (!feof(fp))//从文件中读取同一个项目的到这个链表中用于排名
 		{
-			if (!feof(fp))
+			if (!feof(fp) && i != 0)//i!=0用于防止文件第一个被重复读取
 				fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
+			i++;
 			if (strcmp(current->item, witem) == 0)
 			{
-				printf("%s\n", wname);
-				strcpy(rname[i], wname);
-				i++;
 				current = (stu*)malloc(sizeof(stu));
 				prev->next = current;
 				strcpy(current->name, wname);
@@ -366,11 +336,10 @@ void teamwrite(char*fname)
 			{
 				fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
 			}
-			//fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		}
 		current->next = NULL;
-		//chaincheck(head);
-		if ((head->mark % 100) / 10 == 1 || (head->mark % 100) / 10 == 3)
+
+		if ((head->mark % 100) / 10 == 1 || (head->mark % 100) / 10 == 3)//排序、赋分
 		{
 			head = maxsort(head);
 			if (head->mark / 100 == 3)
@@ -387,16 +356,14 @@ void teamwrite(char*fname)
 				goal5(head);
 
 		}
-		nf = fopen(fname, "w");
-		//chaincheck(head);
+
+		nf = fopen(fname, "w");//将文件写入到新文件中
 		for (current = head; current != NULL; current = current->next)
 		{
 			fprintf(nf, " %s %s %s %s %.2f %d ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
-			//printf("%s %s %s %s %.2f %d\n ", current->name, current->sex, current->coll, current->item, current->score, current->mark);
-			//fflush(fp);
 
 		}
-		rewind(fp);
+		rewind(fp);//回调指针，读取非录入的项目
 		while (!feof(fp))
 		{
 			if (fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark) != 6)
@@ -404,12 +371,11 @@ void teamwrite(char*fname)
 			for (current = head, j = 0; (current != NULL) && (!feof(fp)); current = current->next)
 			{
 				if (strcmp(current->name, wname) == 0)
-					j++;
+					j++;//j用于记录是否有重名的
 			}
 			if (j == 0)
 			{
 				fprintf(nf, " %s %s %s %s %.2f %d ", wname, wsex, wcoll, witem, wscore, wmark);
-				printf("\n %s %s %s %s %.2f %d \n", wname, wsex, wcoll, witem, wscore, wmark);
 				fflush(fp);
 			}
 			while ((ch = getc(fp)) == ' ');//吃掉空格，便于判断文件末尾
@@ -418,11 +384,11 @@ void teamwrite(char*fname)
 				fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
 			}
 		}
-		chainfree(head);
+		chainfree(head);//释放链表
 		head = NULL;
 		fclose(fp);
 		fclose(nf);
-		remove(fname1);
+		remove(fname1);//将中间文件移除
 		printf("请输入另一要录入的项目(空行结束录入)：\n");
 		n = get2(witem);
 		if (n == 0)
@@ -444,7 +410,7 @@ void teamwrite(char*fname)
 	}
 
 }
-int get2(char *str)
+int get2(char *str)//将输入的换行号换成'\0',并返回'\0'所在位置
 {
 	char ch;
 	int i;

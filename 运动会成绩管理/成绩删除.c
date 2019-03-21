@@ -25,7 +25,7 @@ void dele(void)
 	//char a[1000];
 	printf("请输入要修改的年份：\n");
 	scanf("%s", fname);
-	correctfile(fname);
+	correctfile(fname);//去除中间文件
 	fin = fopen(fname, "r");
 	if (fin == NULL)
 	{
@@ -36,7 +36,7 @@ void dele(void)
 		printf("请输入要删除的姓名及其参加的项目(\033[1;31;47m带性别\033[0m)(如：张三  \033[1;31;47m男子\033[0m跳远):\n");
 	scanf("%s%s", ch, ch1);
 	//fgets(a,1000,fin);
-	for (i = 0; feof(fin) == 0; i++)
+	for (i = 0; feof(fin) == 0; i++)//将文件的内容读到链表中进行查找
 	{
 		if (fscanf(fin, "%s%s%s%s%f%d", aname, asex, acoll, aitem, &ascore, &amark) != 6)
 		{
@@ -107,25 +107,20 @@ void dele(void)
 		if (choice == 3)
 		{
 			choice = 2;
-			select = 3;
+			select = 3;//用于保存后退出
 		}
 	}
-	//fclose(fin);
-	//fin = fopen("2018.txt", "w");
-	/*if (j != 0)
-		strcpy(xiuitem[j], "a");*/
 	for (i = j = 0; i < 29; i++)
 	{
-		j = arr[i] + j;
-		//printf("%s\n", xiuitem[i]);
+		j = arr[i] + j;//检查删除的是否是前3名或前5名
 	}
-	if (j != 0)
+	if (j != 0)//删除的是前3或前5，排序后写入文件
 	{
 		fclose(fin);
 		wrifile(head, fname, xiuitem);
 		printf("删除成功！\n");
 	}
-	else
+	else//非前3、5，直接写入
 	{
 		for (p = head; p != NULL; p = p->next)
 			fprintf(fin, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);

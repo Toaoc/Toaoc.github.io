@@ -4,8 +4,8 @@
 #include <windows.h>
 #include<conio.h>
 #include "cjgl.h"
-void display(void);
-void display0(void);
+void display(void);//主菜单显示
+void display0(void);//封面显示
 int main(void)
 {
 	system("color F0");
@@ -29,13 +29,13 @@ int main(void)
 			break;
 		case 5:exit(0);
 			break;
-		default:printf("输入错误！请输入数字1、2或3！");
+		default:printf("输入错误！请输入数字1-5！");
 		}
 	}
 	return 0;
 
 }
-void display0(void)
+void display0(void)//封面
 {
 	color(0);
 	printf("			        *  *                  *  *                  *  *         \n");
@@ -53,7 +53,7 @@ void display0(void)
 	color(4);
 	printf("					******************************\n					*                            *\n					* 欢迎使用运动会成绩管理系统 * \n					*                            *\n					******************************");
 	printf("\n\n						--→Enter进入←--");
-	while (_getch() != 13);
+	while (_getch() != 13);//用于判断输入的是否是enter键
 }
 void display(void)
 {

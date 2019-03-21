@@ -10,7 +10,7 @@ struct stu *read(char a[])                                   /*º¯Êý£º¶ÁÈ¡ÎÄ¼þ²¢½
 	stu *p1, *p2;
 	FILE *fp;
 	correctfile(a);
-	if ((fp = fopen(a, "r+")) == NULL)
+	if ((fp = fopen(a, "r")) == NULL)
 	{
 		printf("ÎÞ·¨´ò¿ªÎÄ¼þ\n");
 		exit(0);
