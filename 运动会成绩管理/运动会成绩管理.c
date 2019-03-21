@@ -15,7 +15,8 @@ int main(void)
 	{
 		system("cls");
 		display();
-		scanf("%d", &a);
+		while (scanf("%d", &a) != 1)
+			printf("输入错误，请重新输入：\n");
 		switch (a)
 		{
 		case 1:search();

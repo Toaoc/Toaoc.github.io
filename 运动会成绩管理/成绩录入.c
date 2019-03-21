@@ -4,14 +4,14 @@
 #include<Windows.h>
 #include "cjgl.h"
 void wdisplay(void);
-void ensex(char *witem,char *wsex);
-void singlewrite(char*fname);
-void teamwrite(char*fname);
-int get2(char *str);
+void ensex(char *witem,char *wsex);//用于从项目中录入性别
+void singlewrite(char*fname);//个人项目录入
+void teamwrite(char*fname);//团体项目录入
+int get2(char *str);//用于判断录入（通过返回值）
 void enter(void)
 {
-	char fname[30];
-	int choice;
+	char fname[30];//文件名（即年份）
+	int choice;//用于记录用户的选择
 	choice = -1;
 	while (choice != 3)
 	{
@@ -23,7 +23,8 @@ void enter(void)
 		printf("\t\t\t3、返回上一层\n");
 		printf("\t\t\t4、退出程序\n");
 		printf("请输入数字1-4执行程序：");
-		scanf("%d", &choice);
+		while (scanf("%d", &choice) != 1)//判断输入的是否是整型数
+			printf("输入错误，请重新输入：\n");
 		switch (choice)
 		{
 		case 1:singlewrite(fname);
@@ -43,19 +44,17 @@ void enter(void)
 void ensex(char *witem,char *wsex)
 {
 	int i;
-	for (i = 0; i != 2; i++)
+	for (i = 0; i != 2; i++)//从项目中截取两个字节作为性别
 		wsex[i] = witem[i];
 	wsex[i] = '\0';
 	printf("%s\t%s\n", witem, wsex);
 }
 void singlewrite(char *fname)
 {
-	//system("cls");
-	//printf("注意！录入时请不要中途退出！！\n");
 	FILE *fp, *nf;
 	stu * head, *prev, *current;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };
-	int a, b, wmark, i, j, k, n;
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, rname[40][30] = { 'a' };//带w的都是用来暂时存储数据，防止直接对链表进行操作时产生意外
+	int a, b, wmark, i, j, k, n;//a,b用于生成标记码的前两位，a代表获奖名次，b代表排序方式
 	float wscore;
 	head = NULL;
 	prev = NULL;
@@ -72,11 +71,11 @@ void singlewrite(char *fname)
 		printf("文件打开错误！\n");
 		exit(EXIT_FAILURE);
 	}*/
-	for (k = 0;k!=-1; k++)
+	for (k = 0;k!=-1; k++)//只有输入带性别的项目才能break
 	{
-		printf("请输入所要录入的项目(\033[1;31;47m带性别 \033[0m，如男子跳远、女子跳高）：\n");
+		printf("请输入所要录入的项目(\033[1;31;47m带性别 \033[0m，如\033[1;31;47m男子\033[0m跳远、\033[1;31;47m女子\033[0m跳高）：\n");
 		scanf("%s", witem);
-		ensex(witem, wsex);
+		ensex(witem, wsex);//获取性别
 		if (strcmp(wsex, "男") == 0 || strcmp(wsex, "女") == 0)
 			break;
 		else
@@ -84,10 +83,9 @@ void singlewrite(char *fname)
 	}
 	while (1)
 	{
-		i=rename(fname1, fname);//防止因之前用户不规范退出使临时文件名称名未修改而造成的数据丢失
-		printf("%d\n", i);
-		rename(fname, fname1);
-		fp = fopen(fname1, "a+");
+		rename(fname1, fname);
+		rename(fname, fname1);//将原文件改为c.txt,使其成为中间文件
+		fp = fopen(fname1, "r");
 		if (fp == NULL)
 		{
 			printf("文件打开错误！\n");
@@ -100,15 +98,15 @@ void singlewrite(char *fname)
 		while (scanf("%d", &b) != 1 || (b != 1 && b != 2))
 			printf("输入错误，请重新输入\n");
 		printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
-		getchar();
-		while (s_gets(wname, 45) != NULL && wname[0] != '\0')
+		getchar();//用于读取缓存区中遗留的换行符，防止判断出错
+		while (s_gets(wname, 45) != NULL && wname[0] != '\0')//判断用户的输入
 		{
 			current = (stu*)malloc(sizeof(stu));
 			if (head == NULL)
 				head = current;
 			else
 				prev->next = current;
-			strcpy(current->name, wname);
+			strcpy(current->name, wname);//将用户输入记录到链表当中
 			strcpy(current->item, witem);
 			strcpy(current->sex, wsex);
 			printf("%s\n", current->sex);
@@ -119,13 +117,13 @@ void singlewrite(char *fname)
 			printf("请输入%s的成绩：\n", wname);
 			while (scanf("%f", &current->score) != 1)
 				printf("输入错误，请重新输入\n");
-			current->mark = 100 * a + 10 * b;
+			current->mark = 100 * a + 10 * b;//生成标记码前两位
 			printf("录入成功！\n");
 			prev = current;
 			printf("请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
 		}
 
-		rewind(fp);
+		rewind(fp);//将指针回调到开头，
 		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		i = 0;
 		while (!feof(fp))
@@ -209,7 +207,7 @@ void singlewrite(char *fname)
 		fclose(fp);
 		fclose(nf);
 		remove(fname1);
-		printf("请输入所要录入的项目(带性别，如男子跳远、女子跳高）：\n");
+		printf("请输入所要录入的项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m跳远、\033[1;31;47m女子\033[0m跳高），空行结束输入：\n");
 		n = get2(witem);
 		if (n == 0)
 			break;
@@ -217,7 +215,7 @@ void singlewrite(char *fname)
 		{
 			if (k > 0)
 			{
-				printf("请输入所要录入的项目(带性别，如男子跳远、女子跳高）：\n");
+				printf("请输入所要录入的项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m跳远、\033[1;31;47m女子\033[0m跳高）：\n");
 				scanf("%s", witem);
 			}
 			ensex(witem, wsex);
@@ -256,7 +254,7 @@ void teamwrite(char*fname)
 	}*/
 	for (k = 0; k != -1; k++)
 	{
-		printf("请输入所要录入的团体项目(带性别，如男子篮球、女子足球）：\n");
+		printf("请输入所要录入的团体项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m篮球、\033[1;31;47m女子\033[0m足球）：\n");
 		scanf("%s", witem);
 		ensex(witem, wsex);
 		if (strcmp(wsex, "男") == 0 || strcmp(wsex, "女") == 0)
@@ -433,7 +431,7 @@ void teamwrite(char*fname)
 		{
 			if (k > 0)
 			{
-				printf("请输入所要录入的项目(带性别，如男子篮球、女子足球）：\n");
+				printf("请输入所要录入的团体项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m篮球、\033[1;31;47m女子\033[0m足球）：\n");
 				scanf("%s", witem);
 			}
 			ensex(witem, wsex);

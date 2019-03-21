@@ -35,7 +35,8 @@ void search(void)
 	while (select != 4)
 	{
 		sdisplay1();
-		scanf("%d", &select);
+		while (scanf("%d", &select) != 1)
+			printf("输入错误，请重新输入：\n");
 		switch (select)
 		{
 		case 1:search2();
@@ -97,7 +98,8 @@ void search2(void)
 	//sdisplay2(tem);
 	sdisplay2(tem);
 	int choice;
-	scanf("%d", &choice);
+	while (scanf("%d", &choice) != 1)
+		printf("输入错误，请重新输入：\n");
 	stu *current, *prev, *head;
 	current = NULL;
 	head = NULL;
@@ -125,7 +127,8 @@ void search2(void)
 		if (choice == 0)
 		{
 			sdisplay2(tem);
-			scanf("%d", &choice);
+			while (scanf("%d", &choice) != 1)
+				printf("输入错误，请重新输入：\n");
 		}
 		switch (choice)
 		{
@@ -196,7 +199,8 @@ void search2(void)
 			}
 			printf("\n");
 			printf("继续%s届查询请按1\n查询其他届请按2\n退出程序请按3\n",tem);
-			scanf("%d", &a);
+			while (scanf("%d", &a) != 1)
+				printf("输入错误，请重新输入：\n");
 			if (a == 1)
 			{
 				choice = 0;
@@ -241,7 +245,8 @@ void search2(void)
 					printf("没有此学院，请检查后重新输入\n");
 				strcpy(rankitem, "a");
 				printf("\n继续进行学院查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
-				scanf("%d", &a);
+				while (scanf("%d", &a) != 1)
+					printf("输入错误，请重新输入：\n");
 				switch (a)
 				{
 				case 1:
@@ -289,7 +294,8 @@ void search2(void)
 					printf("查无此人\n");
 				strcpy(rankitem, "a");
 				printf("\n继续进行姓名查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
-				scanf("%d", &a);
+				while (scanf("%d", &a) != 1)
+					printf("输入错误，请重新输入：\n");
 				switch (a)
 				{
 				case 1:
@@ -310,7 +316,7 @@ void search2(void)
 			a = 1;
 			while (a == 1)
 			{
-				printf("请输入项目名称(带性别，如男子跳高、女子跳远)：\n\n");
+				printf("请输入项目名称(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m跳高、\033[1;31;47m女子\033[0m跳远)：\n\n");
 				s_gets(sitem, 30);
 				current = head;
 				while (current != NULL)
@@ -329,7 +335,8 @@ void search2(void)
 				if (a == 1)
 					printf("没有此项目，请检查后重新输入！\n");
 				printf("\n继续进行项目查询请按1\n继续%s届查询请按2\n查询其他届请按3\n退出程序请按4\n", tem);
-				scanf("%d", &a);
+				while (scanf("%d", &a) != 1)
+					printf("输入错误，请重新输入：\n");
 				switch (a)
 				{
 				case 1:
@@ -393,7 +400,8 @@ void search2(void)
 			}
 			a = 1;
 			printf("\n继续%s届查询请按1\n查询其他届请按2\n退出程序请按3\n", tem);
-			scanf("%d", &a);
+			while (scanf("%d", &a) != 1)
+				printf("输入错误，请重新输入：\n");
 			switch (a)
 			{
 			case 1:choice = 0;

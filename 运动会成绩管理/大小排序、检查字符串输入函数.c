@@ -196,8 +196,6 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])
 		fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 		//printf(" %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 	}
-	getchar();
-	getchar();
 	chainfree(head);
 	fclose(fp);
 	remove(fname1);

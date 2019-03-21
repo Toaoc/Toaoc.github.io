@@ -18,7 +18,7 @@ void dele(void)
 	int i, j, k;
 	j = 0;
 	k = 0;
-	char ch[30], ch1[30], aname[30], asex[5], acoll[30], aitem[30], fname[20], ofname[20];
+	char ch[30], ch1[30], aname[30], asex[5], acoll[30], aitem[30], fname[20];
 	int amark, arr[30] = { 0 }, choice = 1, select = 0;
 	char xiuitem[30][30] = { "a" };
 	float ascore;
@@ -33,7 +33,7 @@ void dele(void)
 		exit(0);
 	}
 	else
-		printf("请输入要删除的姓名及其参加的项目(如：张三  男子跳远):\n");
+		printf("请输入要删除的姓名及其参加的项目(\033[1;31;47m带性别\033[0m)(如：张三  \033[1;31;47m男子\033[0m跳远):\n");
 	scanf("%s%s", ch, ch1);
 	//fgets(a,1000,fin);
 	for (i = 0; feof(fin) == 0; i++)
