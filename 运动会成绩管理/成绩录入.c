@@ -3,7 +3,6 @@
 #include<string.h>
 #include<Windows.h>
 #include "cjgl.h"
-void wdisplay(void);
 void ensex(char *witem,char *wsex);//用于从项目中录入性别
 void singlewrite(char*fname);//个人项目录入
 void teamwrite(char*fname);//团体项目录入
@@ -54,11 +53,12 @@ void singlewrite(char *fname)
 	FILE *fp, *nf, *ff;
 	stu * head, *prev, *current;
 	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, gitem[30], gname[20];//带w的都是用来暂时存储数据，防止直接对链表进行操作时产生意外
-	int a, b, wmark, i, j, k, n, defen[10], gmark;//a,b用于生成标记码的前两位，a代表获奖名次，b代表排序方式
+	int a, b, wmark, i, j, k, n, defen[10], gmark, fbug, fbug2;//a,b用于生成标记码的前两位，a代表获奖名次，b代表排序方式
 	float wscore;
 	head = NULL;
 	prev = NULL;
 	current = NULL;
+	fbug = 0;
 	/*printf("请输入运动会届数：\n");
 	scanf("%s", fname);*/
 	strcpy(gname, fname);
@@ -83,6 +83,8 @@ void singlewrite(char *fname)
 		else
 			printf("请带上性别后重新输入：\n");
 	}
+	fbug2 = 0;
+	//getchar();
 	while (1)
 	{
 		rename(fname1, fname);
@@ -98,8 +100,7 @@ void singlewrite(char *fname)
 		while (!feof(ff))
 		{
 			if (fscanf(ff, "%s", gitem) != 1)
-			{
-				i = 11; 
+			{ 
 				break;
 			}
 			if (strcmp(gitem, witem) != 0&&!feof(ff))
@@ -120,7 +121,7 @@ void singlewrite(char *fname)
 				break;
 			}
 		}
-		if (i == 11)
+		if (strcmp(gitem, witem) != 0)
 		{
 			printf("请输入该项目的获奖名次：\n");
 			printf("1.取前3名\n2.取前5名\n3.自定义\n");
@@ -128,9 +129,9 @@ void singlewrite(char *fname)
 				printf("输入错误，请重新输入要取的名次\n");
 			switch (a)
 			{
-			case 1: 
+			case 1:
 			{
-				a = 3; 
+				a = 3;
 				defen[0] = 5;
 				defen[1] = 3;
 				defen[2] = 2;
@@ -138,9 +139,9 @@ void singlewrite(char *fname)
 					defen[i] = 0;
 				break;
 			}
-			case 2: 
+			case 2:
 			{
-				a = 5;  
+				a = 5;
 				defen[0] = 7;
 				defen[1] = 5;
 				defen[2] = 3;
@@ -166,7 +167,7 @@ void singlewrite(char *fname)
 				}
 				break;
 			}
-			default:printf("程序出bug，请截图后早开发人员\n"); exit(1);
+			default:printf("程序出bug，请截图后联系开发人员\n"); exit(1);
 			}
 
 			printf("该项目的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n");
@@ -180,10 +181,18 @@ void singlewrite(char *fname)
 			}
 			fprintf(ff, " %d ", gmark);
 			fclose(ff);
+			fbug = 0;
+		}
+		else
+		{
+			fbug = fbug + fbug2;
+			fbug++;
 		}
 		printf("\n请输入%s参赛者的姓名（空行结束该项目输入）：\n", witem);
 		//getchar();//用于读取缓存区中遗留的换行符，防止判断出错
-		while (s_gets(wname, 40) != NULL && wname[0] != '\0')//判断用户的输入
+		if (fbug < 2)
+			getchar();
+		while (s_gets(wname, 45) != NULL && wname[0] != '\0')//判断用户的输入
 		{
 			current = (stu*)malloc(sizeof(stu));
 			if (head == NULL)
@@ -203,6 +212,7 @@ void singlewrite(char *fname)
 			printf("录入成功！\n");
 			prev = current;
 			printf("请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
+			getchar();
 		}
 		rewind(fp);//将指针回调到开头，
 		while (!feof(fp))//从文件中读取同项目到该链表中
@@ -224,24 +234,18 @@ void singlewrite(char *fname)
 				current->mark = wmark;
 				prev = current;
 			}
-			//while ((ch = getc(fp)) == ' ');//吃掉空格，便于判断文件末尾
-			//if (ch != ' '&&ch != EOF)
-			//{
-			//	fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
-			//}
-			//fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);
 		}
 		printf("%s\n", current->name);
 		current->next = NULL;
 		if ((head->mark % 100) / 10 == 1)//对链表进行排名并赋分
 		{
 			head = maxsort(head);	
-			goaluser(gname,head);
+			goal(gname,head);
 		}
 		else
 		{
 			head = minsort(head);
-			goaluser(gname, head);
+			goal(gname, head);
 		}
 		nf = fopen(fname, "w");
 		for (current = head; current != NULL; current = current->next)//将链表里的内容写入到新文件中
@@ -287,7 +291,10 @@ void singlewrite(char *fname)
 			}
 			ensex(witem, wsex);
 			if (strcmp(wsex, "男") != 0 || strcmp(wsex, "女") != 0)
+			{
+				fbug2 = 1;
 				break;
+			}
 			else
 				printf("请带上性别后重新输入：\n");
 		}
@@ -300,11 +307,12 @@ void teamwrite(char*fname)//团体项目录入
 	FILE *fp, *nf ,*ff;
 	stu * head, *prev, *current;
 	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, gname[20],gitem[30];//带w的都是用于临时储存的
-	int a, b, wmark, i, j, k, n, c, gmark, defen[10];
+	int a, b, wmark, i, j, k, n, c, gmark, defen[10], fbug, fbug2;
 	float wscore;
 	head = NULL;
 	prev = NULL;
 	current = NULL;
+	fbug = 0;
 	strcpy(gname, fname);
 	strcat(gname, "score.txt");
 	strcpy(fname1, fname);
@@ -320,6 +328,7 @@ void teamwrite(char*fname)//团体项目录入
 		else
 			printf("请带上性别后重新输入：\n");
 	}
+	fbug2 = 0;
 	while (1)
 	{
 		rename(fname1, fname);
@@ -336,7 +345,6 @@ void teamwrite(char*fname)//团体项目录入
 		{
 			if (fscanf(ff, "%s", gitem) != 1)
 			{
-				i = 11;
 				break;
 			}
 			if (strcmp(gitem, witem) != 0 && !feof(ff))
@@ -357,7 +365,7 @@ void teamwrite(char*fname)//团体项目录入
 				break;
 			}
 		}
-		if (i == 11)
+		if (strcmp(gitem, witem) != 0)
 		{
 			printf("请输入该项目的获奖名次：\n");
 			printf("1.取前3名\n2.取前5名\n3.自定义\n");
@@ -427,16 +435,17 @@ void teamwrite(char*fname)//团体项目录入
 			}
 			fprintf(ff, " %d ", gmark);
 			fclose(ff);
-			i = 11;
+			fbug = 0;
 		}
 		else
 		{
 			a = gmark / 100;
 			b = (gmark % 100) / 10;
-			i = 0;
+			fbug = fbug + fbug2;
+			fbug++;
 		}
 		printf("请输入%s参赛学院的名称：\n", witem);
-		if (i == 11)
+		if(fbug < 2)
 			getchar();
 		while (s_gets(wcoll, 45) != NULL && wcoll[0] != '\0')
 		{
@@ -506,12 +515,12 @@ void teamwrite(char*fname)//团体项目录入
 		if ((head->mark % 100) / 10 == 1 || (head->mark % 100) / 10 == 3)//排序、赋分
 		{
 			head = maxsort(head);
-			goaluser(gname, head);
+			goal(gname, head);
 		}
 		else
 		{
 			head = minsort(head);
-			goaluser(gname, head);
+			goal(gname, head);
 
 		}
 
@@ -547,7 +556,7 @@ void teamwrite(char*fname)//团体项目录入
 		fclose(fp);
 		fclose(nf);
 		remove(fname1);//将中间文件移除
-		printf("请输入另一要录入的项目(空行结束录入)：\n");
+		printf("请输入另一要录入的项目(\033[1;31;47m带性别\033[0m，如\033[1;31;47m男子\033[0m篮球、\033[1;31;47m女子\033[0m排球），空行结束录入：\n");
 		n = get2(witem);
 		if (n == 0)
 			break;
@@ -560,7 +569,10 @@ void teamwrite(char*fname)//团体项目录入
 			}
 			ensex(witem, wsex);
 			if (strcmp(wsex, "男") != 0 || strcmp(wsex, "女") != 0)
+			{
+				fbug2 = 1;
 				break;
+			}
 			else
 				printf("请带上性别后重新输入：\n");
 		}

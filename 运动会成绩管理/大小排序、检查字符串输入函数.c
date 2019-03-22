@@ -110,7 +110,7 @@ struct stu *minsort(stu *head)//该函数是从1个逐渐拉到多个的排法
 void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文件写入，fname表示修改的文件名，xiuname表示修改的项目（可有多个）
 {
 	stu *current, *p, *first, *prev, *before;
-	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch;//带w的都是临时的
+	char  wname[40], wsex[5], wcoll[30], witem[20], fname1[20], ch, gname[20];//带w的都是临时的
 	float wscore;
 	int wmark, i, j, count[3] = { 0 };//count用于计算同项目的有多少个，从而确定before->next是哪一个
 	FILE *fp;
@@ -120,6 +120,8 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 	strcpy(fname1, fname);
 	for (i = 0; fname1[i] != '.'; i++);
 	fname1[i] = '\0';
+	strcpy(gname, fname1);
+	strcat(gname, "score.txt");
 	strcat(fname1, "c.txt");
 	rename(fname, fname1);//将原文件改为中间文件
 	fp = fopen(fname, "w");//这时候打开的是一个新的、空的文件
@@ -142,11 +144,8 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 			if ((first->mark % 100) / 10 == 1)
 				first = maxsort(first);
 			else
-				first = minsort(first);
-			if (first->mark / 100 == 5)
-				goal5(first);
-			else
-				goal3(first);
+				first = minsort(first);;
+			goal(gname, first);
 			for (p = first; p != NULL; p = p->next)
 			{
 				fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
@@ -179,8 +178,9 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 				before = before->next;
 			else
 			{
-				before->next = current->next;
-				before = current->next;
+				before->next = current;
+				printf("c%s\tb%s\n", current->name, before->name);
+				before = before->next;
 				count[0] = 0;//将连续读取计数归零
 			}
 		}
@@ -189,11 +189,17 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 			count[0]++;//判断连续读取的次数
 		}
 		count[2] = count[1];//使这两个相等，从而判断下一个读取
+		if (current->next == NULL&& count[2] != count[1])
+		{
+			before->next = NULL;
+		}
 	}
 	for (p = head; p != NULL; p = p->next)//将其余项目写入到文件中
 	{
 		fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 	}
+	getchar();
+	getchar();
 	chainfree(head);
 	fclose(fp);
 	remove(fname1);//将中间文件去掉

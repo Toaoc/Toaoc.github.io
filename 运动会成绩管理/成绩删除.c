@@ -32,10 +32,6 @@ void dele(void)
 		printf("打开文件失败！\n");
 		exit(0);
 	}
-	printf("请输入要删除的学生姓名:\n");
-	scanf("%s", ch);
-	printf("请输入%s参加的项目(\033[1;31;47m带性别\033[0m)(如 \033[1;31;47m男子\033[0m跳远):\n",ch);
-	scanf("%s", ch1);
 	//fgets(a,1000,fin);
 	for (i = 0; feof(fin) == 0; i++)//将文件的内容读到链表中进行查找
 	{
@@ -63,9 +59,13 @@ void dele(void)
 
 	}
 	current->next = NULL;
+	p = q = head;
 	while (choice != 2)
 	{
-		p = q = head;
+		printf("请输入要删除的学生姓名:\n");
+		scanf("%s", ch);
+		printf("请输入%s参加的项目(\033[1;31;47m带性别\033[0m)(如 \033[1;31;47m男子\033[0m跳远):\n", ch);
+		scanf("%s", ch1);
 		//for(i=0;i<1000;i++)
 		//{
 		while (strcmp(p->name, ch) != 0 || strcmp(p->item, ch1) != 0)
@@ -78,6 +78,8 @@ void dele(void)
 			}
 			//printf("%s %s\n", p->name, p->coll);
 		}
+		printf("%s", p->name);
+		printf("1\n");
 		if (strcmp(p->name, ch) == 0 && strcmp(p->item, ch1) == 0)
 		{
 			printf("\n%s\t%s\t%s\t%s\t%.2f\n", p->name, p->sex, p->coll, p->item, p->score);
@@ -115,14 +117,16 @@ void dele(void)
 	{
 		j = arr[i] + j;//检查删除的是否是前3名或前5名
 	}
+
+	fclose(fin);
 	if (j != 0)//删除的是前3或前5，排序后写入文件
 	{
-		fclose(fin);
 		wrifile(head, fname, xiuitem);
 		printf("删除成功！\n");
 	}
 	else//非前3、5，直接写入
 	{
+		fin = fopen(fname, "w");
 		for (p = head; p != NULL; p = p->next)
 			fprintf(fin, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 		fclose(fin);

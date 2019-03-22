@@ -19,9 +19,7 @@ void enter(void);//写入函数
 void alter(void);//修改函数
 void dele(void);//删除函数
 struct stu *minsort(struct stu *head);//链表从小排到大的函数
-void goal3(struct stu * head);//取前3名的赋分函数
-void goal5(struct stu * head);//取前5名的赋分函数
-void goaluser(char *gnname, struct stu * head);//用户自定义赋分函数
+void goal(char *gnname, struct stu * head);//用户自定义赋分函数
 void chainfree(struct stu * head);//链表释放函数
 struct stu *maxsort(struct stu * head);//链表从大排到小的函数
 void color(short int x);//颜色函数
