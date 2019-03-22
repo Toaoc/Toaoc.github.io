@@ -20,9 +20,9 @@ void sdisplay1(void)//主界面
 {
 	system("cls");
 	printf("***********************运动会成绩管理系统*********************\n");
-	printf("\t\t\t1.按校运会届数查询\n");
-	printf("\t\t\t2.查询各学院历届校运会表现情况\n");
-	printf("\t\t\t3.查询学生历届校运会表现情况\n");
+	printf("\t\t\t1.按届查询\n");
+	printf("\t\t\t2.按学院查询\n");
+	printf("\t\t\t3.按学生查询\n");
 	printf("\t\t\t4.返回上一层\n");
 	printf("\t\t\t5.退出程序\n");
 	printf("请输入数字1-5执行程序：\n");
@@ -70,9 +70,9 @@ void sdisplay2(char tem[])
 {
 	system("cls");
 	printf("\t\t\t1、%s届学院总分报表查询\n",tem);
-	printf("\t\t\t2、%s届各学院成绩查询\n",tem);
+	printf("\t\t\t2、%s届学院成绩查询\n",tem);
 	printf("\t\t\t3、%s届个人成绩查询\n",tem);
-	printf("\t\t\t4、%s届各项目成绩查询\n",tem);
+	printf("\t\t\t4、%s届项目成绩查询\n",tem);
 	printf("\t\t\t5、%s届全部成绩\n",tem);
 	printf("\t\t\t6、返回上一层\n");
 	printf("\t\t\t7、退出程序\n");

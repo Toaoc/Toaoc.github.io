@@ -101,6 +101,42 @@ void goal5(struct stu*head)//取前5名的赋分函数
 		
 	}
 }
+void goaluser(char *gname,struct stu*head)
+{
+	stu  *current, *prev;
+	FILE *fp;
+	char  gitem[30];
+	int defen[10], i, mark, gmark;
+	strcpy(gitem, "a");
+	fp = fopen(gname, "a+");
+	while (strcmp(gitem, head->item) != 0)
+	{
+		if (fscanf(fp,"%s", gitem) != 1)
+		{
+			printf("程序文件已遭到破坏！！");
+			exit(1);
+		}
+		for (i = 0; i < 10; i++)
+		{
+			fscanf(fp, "%d", &defen[i]);
+		}
+		fscanf(fp, "%d", &gmark);
+	}
+	for (prev = current = head ,i = 0; current != NULL; prev = current, current = current->next)
+	{
+		if ((current->mark % 100) / 10 == 3 || (current->mark % 100) / 10 == 4)//团体项目的赋分
+		{
+			if ((current != head) && (strcmp(current->coll, prev->coll) == 0))
+			{
+				current->mark = prev->mark;
+				continue;
+			}
+		}
+		current->mark = ((current->mark) / 10) * 10 + defen[i];
+		if (i < 9)
+			i++;
+	}
+}
 void color(short int x)//成绩查询时给前3名来的特效以及封面的五环颜色
 {
 	switch (x)
@@ -120,7 +156,6 @@ void color(short int x)//成绩查询时给前3名来的特效以及封面的五环颜色
 void correctfile(char *fname)//将文件名纠正的函数，录入、修改、删除时若不正常退出，会产生中间文件，该函数将其纠正
 {
 	char ofname[20];
-	int i;
 	strcpy(ofname, fname);
 	strcat(ofname, "c.txt");
 	strcat(fname, ".txt");
