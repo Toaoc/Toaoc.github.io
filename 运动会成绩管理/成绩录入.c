@@ -9,7 +9,7 @@ void teamwrite(char*fname);//团体项目录入
 int get2(char *str);//用于判断录入（通过返回值）
 void enter(void)
 {
-	char fname[30];//文件名（即年份）
+	char fname[30], ch;//文件名（即年份）
 	int choice;//用于记录用户的选择
 	choice = -1;
 	while (choice != 3)
@@ -23,7 +23,10 @@ void enter(void)
 		printf("\t\t\t4、退出程序\n");
 		printf("请输入数字1-4执行程序：");
 		while (scanf("%d", &choice) != 1)//判断输入的是否是整型数
+		{
+			while ((ch = getchar() != '\n') && ch != EOF);
 			printf("输入错误，请重新输入：\n");
+		}
 		switch (choice)
 		{
 		case 1:singlewrite(fname);
@@ -125,8 +128,20 @@ void singlewrite(char *fname)
 		{
 			printf("请输入该项目的获奖名次：\n");
 			printf("1.取前3名\n2.取前5名\n3.自定义\n");
-			while (scanf("%d", &a) != 1 || a < 1 || a > 3)
+			while (scanf("%d", &a) != 1 )
+			{
+				while ((ch = getchar() != '\n') && ch != EOF);
 				printf("输入错误，请重新输入要取的名次\n");
+			}
+			while (a < 1 || a > 3)
+			{
+				printf("输入错误，请重新输入要取的名次\n");
+				while (scanf("%d", &a) != 1)
+				{
+					while ((ch = getchar() != '\n') && ch != EOF);
+					printf("输入错误，请重新输入要取的名次\n");
+				}
+			}
 			switch (a)
 			{
 			case 1:
@@ -154,12 +169,29 @@ void singlewrite(char *fname)
 			case 3:
 			{
 				printf("请输入要取的名次(1-10)：\n");
-				while (scanf("%d", &a) != 1 || a < 1 || a > 10)
+				while (scanf("%d", &a) != 1 )
+				{
+					while ((ch = getchar() != '\n') && ch != EOF);
 					printf("输入错误，请重新输入要取的名次\n");
+				} 
+				while (a < 1 || a > 10)
+				{
+					printf("输入错误，请重新输入要取的名次\n");
+					while (scanf("%d", &a) != 1)
+					{
+						while ((ch = getchar() != '\n') && ch != EOF);
+						printf("输入错误，请重新输入要取的名次\n");
+					}
+
+				}
 				for (i = 1; i < a + 1; i++)
 				{
 					printf("请输入第%d名可获得的的分数：\n", i);
-					scanf("%d", &defen[i - 1]);
+					while (scanf("%d", &defen[i - 1]) != 1)
+					{
+						while ((ch = getchar() != '\n') && ch != EOF);
+						printf("输入错误，请重新输入第%d名可获得的的分数：\n", i);
+					}
 				}
 				for (i = i - 1; i < 10; i++)
 				{
@@ -171,8 +203,14 @@ void singlewrite(char *fname)
 			}
 
 			printf("该项目的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n");
-			while (scanf("%d", &b) != 1 || (b != 1 && b != 2))
+			while ((i = scanf("%d", &b)) != 1 || (b != 1 && b != 2))
+			{
+				if (1 != i)
+				{
+					while ((ch = getchar() != '\n') && ch != EOF);
+				}
 				printf("输入错误，请重新输入\n");
+			}
 			gmark = a * 100 + b * 10;
 			fprintf(ff, " %s ", witem);
 			for (i = 0; i < 10; i++)
@@ -207,13 +245,18 @@ void singlewrite(char *fname)
 			scanf("%s", current->coll);
 			printf("请输入%s的成绩：\n", wname);
 			while (scanf("%f", &current->score) != 1)
+			{
+				while ((ch = getchar() != '\n') && ch != EOF);
 				printf("输入错误，请重新输入\n");
+			}
 			current->mark = gmark;//生成标记码前两位
 			printf("录入成功！\n");
 			prev = current;
 			printf("请输入%s另一参赛者的姓名（空行结束该项目录入）：\n", witem);
 			getchar();
 		}
+		if (head == NULL)
+			break;
 		rewind(fp);//将指针回调到开头，
 		while (!feof(fp))//从文件中读取同项目到该链表中
 		{
@@ -369,8 +412,12 @@ void teamwrite(char*fname)//团体项目录入
 		{
 			printf("请输入该项目的获奖名次：\n");
 			printf("1.取前3名\n2.取前5名\n3.自定义\n");
-			while (scanf("%d", &a) != 1 || a < 1 || a > 3)
+			while ((i = scanf("%d", &a)) != 1 || a < 1 || a > 3)
+			{
+				if(i!=1)
+					while ((ch = getchar() != '\n') && ch != EOF);
 				printf("输入错误，请重新输入要取的名次\n");
+			}
 			switch (a)
 			{
 			case 1:
@@ -398,8 +445,12 @@ void teamwrite(char*fname)//团体项目录入
 			case 3:
 			{
 				printf("请输入要取的名次(1-10)：\n");
-				while (scanf("%d", &a) != 1 || a < 1 || a > 10)
+				while ((i = scanf("%d", &a) != 1) || a < 1 || a > 10)
+				{
+					if(i!=1)
+						while ((ch = getchar() != '\n') && ch != EOF);
 					printf("输入错误，请重新输入要取的名次\n");
+				}
 				for (i = 1; i < a + 1; i++)
 				{
 					printf("请输入第%d名可获得的的分数：\n", i);
@@ -414,8 +465,12 @@ void teamwrite(char*fname)//团体项目录入
 			default:printf("程序出bug，请截图后早开发人员\n"); exit(1);
 			}
 			printf("%s的1-%d名是否按数值成绩统一排名：\n1、是\n2、否\n", witem, a);
-			while (scanf("%d", &c) != 1 || (c != 1 && c != 2))
+			while ((i = scanf("%d", &c)) != 1 || (c != 1 && c != 2))
+			{
+				if(i!=1)
+					while ((ch = getchar() != '\n') && ch != EOF);
 				printf("输入错误，请重新输入\n");
+			}
 			if (1 == c)
 				b = c + 1;
 			else
@@ -423,8 +478,12 @@ void teamwrite(char*fname)//团体项目录入
 			if (2 == b)
 			{
 				printf("%s的好成绩为高数值还是低数值：\n1、高数值\n2、低数值\n", witem);
-				while (scanf("%d", &c) != 1 || (c != 1 && c != 2))
+				while ((i=scanf("%d", &c)) != 1 || (c != 1 && c != 2))
+				{
+					if(i!=1)
+						while ((ch = getchar() != '\n') && ch != EOF);
 					printf("输入错误，请重新输入\n");
+				}
 				b = b + c;
 			}
 			gmark = a * 100 + b * 10;
@@ -453,14 +512,20 @@ void teamwrite(char*fname)//团体项目录入
 			{
 				printf("请输入%s的成绩：\n", wcoll);
 				while (scanf("%f", &wscore) != 1)
+				{
+					while ((ch = getchar() != '\n') && ch != EOF);
 					printf("输入错误，请重新输入\n");
+				}
 				//scanf("%f", &wscore);
 			}
 			else
 			{
 				printf("请输入%s获得的名次：\n", wcoll);
 				while (scanf("%f", &wscore) != 1)
+				{
+					while ((ch = getchar() != '\n') && ch != EOF);
 					printf("输入错误，请重新输入\n");
+				}
 				b = 4;//将b改回为4，4即为从小到大排
 			}
 			printf("请输入%s的选手：\n", wcoll);
@@ -483,7 +548,8 @@ void teamwrite(char*fname)//团体项目录入
 			}
 			printf("\n请输入%s另一参赛学院的名称（空行结束该项目录入）：\n", witem);
 		}
-
+		if (head == NULL)
+			break;
 		rewind(fp);
 		fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark);//先尝试读取，便于判断文件末尾
 		i = 0;
