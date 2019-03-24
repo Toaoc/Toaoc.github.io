@@ -100,17 +100,22 @@ void search2(void)
 		exit(EXIT_FAILURE);
 	}
 	//sdisplay2(tem);
-	sdisplay2(tem);
+	/*sdisplay2(tem);
 	int choice;
 	while (scanf("%d", &choice) != 1)
 	{
 		while ((ch = getchar() != '\n') && ch != EOF);
 		printf("输入错误，请重新输入：\n");
-	}
+	}*/
 	stu *current, *prev, *head;
 	current = NULL;
 	head = NULL;
 	prev = NULL;
+	while ((ch = getc(fp)) == ' ');//吃掉空格，便于判断文件末尾
+	if (ch != ' '&&ch != EOF)
+	{
+		fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
+	}
 	while (!feof(fp))//建立整个文件的链表
 	{
 		current = (stu*)malloc(sizeof(stu));
@@ -126,8 +131,23 @@ void search2(void)
 			fseek(fp, -1L, SEEK_CUR);//将指针回退一字节，防止乱码
 		}
 	}
+	if (NULL == head)
+	{
+		printf("该文件内尚无数据！\n");
+		printf("\nEnter键返回上一层\n");
+		getchar();
+		getchar();
+		return;
+	}
 	current->next = NULL;
 	fclose(fp);
+	sdisplay2(tem);
+	int choice;
+	while (scanf("%d", &choice) != 1)
+	{
+		while ((ch = getchar() != '\n') && ch != EOF);
+		printf("输入错误，请重新输入：\n");
+	}
 	//head=sort(head);
 	while(choice!=6)
 	{
