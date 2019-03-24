@@ -137,6 +137,7 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 			p->next = NULL;
 			//printf("%s\t%s\n", first->name, p->name);
 			current = head;
+			before = head;
 			i++;
 		}
 		if ((first != NULL) && (p != NULL) && (p->next == NULL))//排序、赋分后写入文件
@@ -152,6 +153,8 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 			}
 			chainfree(first);
 			first = NULL;
+			if (head == NULL)
+				break;
 			continue;
 		}
 		if (strcmp(xiuitem[i], current->item) == 0)//建立一个新链表，把原链表上的同修改项目的项目装到新链表中
@@ -198,8 +201,6 @@ void wrifile(stu *head, char *fname, char xiuitem[][30])//用于修改和删除模块的文
 	{
 		fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 	}
-	getchar();
-	getchar();
 	chainfree(head);
 	fclose(fp);
 	remove(fname1);//将中间文件去掉

@@ -49,7 +49,7 @@ void ensex(char *witem,char *wsex)
 	for (i = 0; i != 2; i++)//从项目中截取两个字节作为性别
 		wsex[i] = witem[i];
 	wsex[i] = '\0';
-	printf("%s\t%s\n", witem, wsex);
+	//printf("%s\t%s\n", witem, wsex);
 }
 void singlewrite(char *fname)
 {
@@ -240,7 +240,7 @@ void singlewrite(char *fname)
 			strcpy(current->name, wname);//将用户输入记录到链表当中
 			strcpy(current->item, witem);
 			strcpy(current->sex, wsex);
-			printf("%s\n", current->sex);
+			//printf("%s\n", current->sex);
 			printf("请输入%s所属学院：\n", wname);
 			scanf("%s", current->coll);
 			printf("请输入%s的成绩：\n", wname);
@@ -263,7 +263,6 @@ void singlewrite(char *fname)
 			
 			if (fscanf(fp, "%s%s%s%s%f%d", wname, wsex, wcoll, witem, &wscore, &wmark) != 6)
 				break;
-			printf("%s\n", wname);
 			if (strcmp(current->item, witem) == 0)
 			{
 				printf("%s\n", wname);
@@ -278,7 +277,6 @@ void singlewrite(char *fname)
 				prev = current;
 			}
 		}
-		printf("%s\n", current->name);
 		current->next = NULL;
 		if ((head->mark % 100) / 10 == 1)//对链表进行排名并赋分
 		{

@@ -450,7 +450,7 @@ void seacol(char *colname)//输出历年学院成绩
 	FILE *fp;
 	char scname[40], scsex[5], scitem[30], sccol[40], str[20], rankitem[30];
 	float scsco;
-	int  scmark, rank;
+	int  scmark, rank, n;
 	struct _finddata_t FileInfo;
 
 	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)//寻找全部txt文件，并判断是否存在
@@ -485,34 +485,47 @@ void seacol(char *colname)//输出历年学院成绩
 		}
 		fclose(fp);
 		//printf('\n');
+		n = 0;
 		while (_findnext(Handle, &FileInfo) == 0)//输出其他文件符合要求的结果
 		{
 			//printf("%s\n", FileInfo.name);
 			strcpy(str, FileInfo.name);
 			killdot(str);
-			printf("%s:\n", str);
-			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
-			fp = fopen(FileInfo.name, "r+");
 			rank = 1;
-			while (!feof(fp))
+			if (strlen(str) < 7)
 			{
-				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
-					break;
-				if (strcmp(scitem, rankitem) != 0)
-					rank = 1;
-				else
+
+				printf("%s:\n", str);
+				printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
+				fp = fopen(FileInfo.name, "r");
+				while (!feof(fp))
 				{
-					if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
-						rank++;
+					n = 0;
+					if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+						break;
+					if (strcmp(scitem, rankitem) != 0)
+						rank = 1;
+					else
+					{
+						if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+							rank++;
+					}
+					if (strcmp(sccol, colname) == 0)
+					{
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco, rank);
+						n++;
+					}
+					strcpy(rankitem, scitem);
 				}
-				if (strcmp(sccol, colname) == 0)
-					printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco, rank);
-				strcpy(rankitem, scitem);
+				fclose(fp);
 			}
-			fclose(fp);
-			while (getchar() != '\n');
+			if (n != 0)
+				while (getchar() != '\n');
 			//printf('\n');
 		}
+		getchar();
+		printf("Enter键结束该项查询");
+		while (getchar() != '\n');
 		_findclose(Handle);
 
 	}
@@ -524,7 +537,7 @@ void seaname(char *stuname)//输出某学生历年成绩，原理同上
 	FILE *fp;
 	char scname[40], scsex[5], scitem[30], sccol[40], str[20], rankitem[30];
 	float scsco;
-	int  scmark, rank;
+	int  scmark, rank, n;
 	struct _finddata_t FileInfo;
 
 	if ((Handle = _findfirst("*.txt", &FileInfo)) == -1L)
@@ -541,7 +554,8 @@ void seaname(char *stuname)//输出某学生历年成绩，原理同上
 		printf("%s:\n", str);
 		printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
 		//printf("%s:\n", str);
-		fp = fopen(FileInfo.name, "r + ");
+		
+		fp = fopen(FileInfo.name, "r ");
 		rank = 1;
 		while (!feof(fp))
 		{
@@ -562,37 +576,49 @@ void seaname(char *stuname)//输出某学生历年成绩，原理同上
 		}
 		fclose(fp);
 		//printf('\n');
+		n = 0;
 		while (_findnext(Handle, &FileInfo) == 0)
 		{
 			//printf("%s\n", FileInfo.name);
 			strcpy(str, FileInfo.name);
 			killdot(str);
 			//printf("%s:\n", str);
-			printf("%s:\n", str);
-			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
-			fp = fopen(FileInfo.name, "r+");
-			rank = 1;
-			while (!feof(fp))
+			/*printf("%s:\n", str);
+			printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");*/
+			if (strlen(str) < 7)
 			{
-				if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
-					break;
-				if (strcmp(scitem, rankitem) != 0)
-					rank = 1;
-				else
+				printf("%s:\n", str);
+				printf("姓名\t性别\t学院\t\t项目\t\t成绩\t排名\n");
+				fp = fopen(FileInfo.name, "r+");
+				rank = 1;
+				while (!feof(fp))
 				{
-					if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
-						rank++;
+					n = 0;
+					if (fscanf(fp, "%s%s%s%s%f%d", scname, scsex, sccol, scitem, &scsco, &scmark) != 6)
+						break;
+					if (strcmp(scitem, rankitem) != 0)
+						rank = 1;
+					else
+					{
+						if ((scmark % 100) / 10 != 3 && (scmark % 100) / 10 != 4)
+							rank++;
+					}
+					if (strcmp(scname, stuname) == 0)
+					{
+						printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco, rank);
+						n++;
+					}
+					strcpy(rankitem, scitem);
 				}
-				if (strcmp(scname, stuname) == 0)
-				{
-					printf("%s\t%s\t%s\t%-12s\t%.2f\t%d\n", scname, scsex, sccol, scitem, scsco,rank);
-				}
-				strcpy(rankitem, scitem);
+				fclose(fp);
 			}
-			fclose(fp);
-			while (getchar() != '\n');
+			if(n != 0)
+				while (getchar() != '\n');
 			//printf('\n');
 		}
+		getchar();
+		printf("Enter键结束该项查询");
+		while (getchar() != '\n');
 		_findclose(Handle);
 
 	}

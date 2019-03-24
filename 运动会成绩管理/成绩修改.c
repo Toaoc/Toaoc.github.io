@@ -45,8 +45,10 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 	pt2 = pt;
 	do
 	{
-		printf("请输入要修改的姓名及其参加的项目(\033[1;31;47m带性别\033[0m)(如：张三  \033[1;31;47m男子\033[0m跳远):\n");
-		scanf("%s %s", a, h);
+		printf("请输入要修改的学生姓名:\n");
+		scanf("%s", a);
+		printf("请输入%s参加的项目(\033[1;31;47m带性别\033[0m)(如 \033[1;31;47m男子\033[0m跳远):\n", a);
+		scanf("%s", h);
 		p = pt;
 		p1 = pt;
 		p2 = pt;
@@ -178,6 +180,7 @@ void change(stu *pt, char u[])                                /*函数：改变链表中
 			fprintf(fp, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 			//fprintf(stdout, " %s %s %s %s %.2f %d ", p->name, p->sex, p->coll, p->item, p->score, p->mark);
 		}
+		fclose(fp);
 		chainfree(p4);
 
 	}

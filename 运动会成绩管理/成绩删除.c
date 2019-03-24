@@ -23,7 +23,7 @@ void dele(void)
 	char xiuitem[30][30] = { "a" };
 	float ascore;
 	//char a[1000];
-	printf("请输入要修改的年份：\n");
+	printf("请输入要删除的年份：\n");
 	scanf("%s", fname);
 	correctfile(fname);//去除中间文件
 	fin = fopen(fname, "r");
@@ -68,6 +68,7 @@ void dele(void)
 		scanf("%s", ch1);
 		//for(i=0;i<1000;i++)
 		//{
+		p = q = head;
 		while (strcmp(p->name, ch) != 0 || strcmp(p->item, ch1) != 0)
 		{
 			q = p;
@@ -78,8 +79,6 @@ void dele(void)
 			}
 			//printf("%s %s\n", p->name, p->coll);
 		}
-		printf("%s", p->name);
-		printf("1\n");
 		if (strcmp(p->name, ch) == 0 && strcmp(p->item, ch1) == 0)
 		{
 			printf("\n%s\t%s\t%s\t%s\t%.2f\n", p->name, p->sex, p->coll, p->item, p->score);

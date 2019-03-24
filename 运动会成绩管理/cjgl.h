@@ -11,7 +11,7 @@ typedef struct stu {
 	int mark;//标记码,第一位代表取多少名，第二位：1、3代表从高排到低，2、4代表从低排到高，第三位代表得分
 	struct stu *next;
 }stu;
-
+void tong(stu *head);
 void wrifile(stu *head, char *fname, char xiuitem[][30]);//修改、删除模块的写入文件函数
 void chaincheck(struct stu*head);
 void search(void);//查询函数
