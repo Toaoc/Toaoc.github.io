@@ -240,6 +240,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2020/05/20/test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Toao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/20/test/" itemprop="url">Hexo的一些问题记录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-20T23:16:11+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Windows下Hexo的一些问题记录"><a href="#Windows下Hexo的一些问题记录" class="headerlink" title="Windows下Hexo的一些问题记录"></a>Windows下Hexo的一些问题记录</h2><ol>
+<li>CMD直接使用hexo只出现三种选项，如下</li>
+</ol>
+<p><img src="D:%5Chexo%5Csource%5Cimages%5Cimage-20200520232143975.png" alt="image-20200520232143975"></p>
+<p>​    解决方法：将进入Hexo的文件夹里再使用相关命令<img src="D:%5Chexo%5Csource%5Cimages%5Cimage-20200520232759383.png" alt="image-20200520232759383"></p>
+<ol start="2">
+<li><p>为Hexo的文章创建分类</p>
+<ol>
+<li><p><code>hexo new page &quot;Categories&quot;</code>,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主动添加分类项进去，只要你的markdown里的categories属性写了分类，该分类就会被添加到Categories页面。</p>
+</li>
+<li><p>对index.md的填写如下，comment代表评论</p>
+<p><code>title: &#39; Categories &#39;
+date: 2020-05-20 22:06:04
+type: &quot;categories&quot;
+comments: false</code> </p>
+</li>
+<li><p>对于Next主题的，在hexo\themes\next_config.yml中去除categories前面的#号，并且检查<code>home: /</code></p>
+<p>和<code>/categories/</code> 后是否有空格，有则去掉，否则会出现Cannot find /Categories/%20的错误</p>
+<p><code>home: /|| home
+  #about: /about/ || user
+  #tags: /tags/ || tags
+  categories: /categories/|| th
+  archives: /archives/ || archive
+  #schedule: /schedule/ || calendar
+  #sitemap: /sitemap.xml || sitemap
+  #commonweal: /404/ || heartbeat</code> </p>
+</li>
+<li><p>执行<code>hexo g</code> <code>hexo d</code> 和<code>hexo s</code> 在localhost:4000即可看到结果，同时hexo d 也将修改上传到了网页。</p>
+</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2020/05/20/Hexo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -643,12 +816,21 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/Categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
             
 
             
