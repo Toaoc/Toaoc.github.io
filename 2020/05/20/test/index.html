@@ -87,8 +87,8 @@
 <meta property="og:description" content="Windows下Hexo的一些问题记录 CMD直接使用hexo只出现三种选项，如下   ​    解决方法：将进入Hexo的文件夹里再使用相关命令  为Hexo的文章创建分类  hexo new page &amp;quot;Categories&amp;quot;,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;2020&#x2F;05&#x2F;20&#x2F;images&#x2F;image-20200520232143975.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;2020&#x2F;05&#x2F;20&#x2F;test&#x2F;..%5Cimages%5Cimage-20200520232759383.png">
-<meta property="og:updated_time" content="2020-05-20T15:52:34.832Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;2020&#x2F;05&#x2F;20&#x2F;images&#x2F;image-20200520232759383.png">
+<meta property="og:updated_time" content="2020-05-20T15:55:10.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;2020&#x2F;05&#x2F;20&#x2F;images&#x2F;image-20200520232143975.png">
 
@@ -336,7 +336,7 @@
 <li>CMD直接使用hexo只出现三种选项，如下</li>
 </ol>
 <p><img src="../images/image-20200520232143975.png" alt="image-20200520232143975"></p>
-<p>​    解决方法：将进入Hexo的文件夹里再使用相关命令<img src="..%5Cimages%5Cimage-20200520232759383.png" alt="image-20200520232759383"></p>
+<p>​    解决方法：将进入Hexo的文件夹里再使用相关命令<img src="../images/image-20200520232759383.png" alt="image-20200520232759383"></p>
 <ol start="2">
 <li><p>为Hexo的文章创建分类</p>
 <ol>
@@ -364,6 +364,8 @@ comments: false</code> </p>
 </ol>
 </li>
 <li><p>对于博客中图片的加载，可使用相对路径，在source中创建images文件夹，把图片放在里面，然后再博客里把markdown的图片路径改为<code>../images/图片名</code> 进行使用即可</p>
+</li>
+<li><p>hexo对语法的检查很严格，开头的title这些信息冒号后面都需一个空格，否则会有Error</p>
 </li>
 </ol>
 
