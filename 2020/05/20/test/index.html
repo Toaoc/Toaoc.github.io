@@ -88,7 +88,8 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232143975.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232759383.png">
-<meta property="og:updated_time" content="2020-05-21T01:17:33.649Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;picture.png">
+<meta property="og:updated_time" content="2020-05-21T01:28:25.823Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232143975.png">
 
@@ -363,11 +364,12 @@ comments: false</code> </p>
 </li>
 </ol>
 </li>
-<li><p>对于博客中图片的加载，可使用相对路径，在source中创建images文件夹，把图片放在里面，然后再博客里把markdown的图片路径改为<code>../images/图片名</code> 进行使用即可</p>
-</li>
 <li><p>hexo对语法的检查很严格，开头的title这些信息冒号后面都需一个空格，否则会有Error</p>
 </li>
 <li><p>对于由于git大小写问题出现的404，如url：/Categories/在GitHub上变为：/categories，把public文件夹里的Categories改为 categories即可</p>
+</li>
+<li><p>Hexo图片引用问题，在source的_post目录中新建一个images文件夹，如下<img src="/images/picture.png" alt="picture"></p>
+<p>然后把图片放在里面用路径<code>/images/图片名</code> 进行引用即可</p>
 </li>
 </ol>
 
