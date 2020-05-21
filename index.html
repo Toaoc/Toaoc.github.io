@@ -368,8 +368,7 @@ comments: false</code> </p>
 </li>
 <li><p>对于由于git大小写问题出现的404，如url：/Categories/在GitHub上变为：/categories，把public文件夹里的Categories改为 categories即可</p>
 </li>
-<li><p>Hexo图片引用问题，在source的_post目录中新建一个images文件夹，如下<img src="/images/picture.png" alt="picture"></p>
-<p>然后把图片放在里面用路径<code>/images/图片名</code> 进行引用即可</p>
+<li><p>Hexo图片引用问题，在source目录下新建一个images文件夹，然后把图片放在里面用路径<code>/images/图片名</code> 进行引用即可，这个方法的Hexo的主页和文章详细页都可见，但在本地不可见,可先放里面，然后deploy，接着使用<code>https://toaoc.github.io/images/图片名</code> 即可引用。</p>
 </li>
 </ol>
 
