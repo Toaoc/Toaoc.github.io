@@ -240,6 +240,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2020/09/08/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Toao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/09/08/%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/" itemprop="url">两数相加</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-08T18:25:46+08:00">
+                2020-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="leetcode-两数相加"><a href="#leetcode-两数相加" class="headerlink" title="leetcode: 两数相加"></a>leetcode: 两数相加</h1><p>对于链表长度头部未知的，可在头部前多设一个节点来快速获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        ListNode temList1,temList2,newList,newTemList;</span><br><span class="line">        temList1 = l1;</span><br><span class="line">        temList2 = l2;</span><br><span class="line">        <span class="keyword">int</span> carryBit = <span class="number">0</span>, newBit = <span class="number">0</span>;</span><br><span class="line">        newList = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        newTemList = newList;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(temList1 == <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">while</span>(temList2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    newBit = temList2.val + carryBit;</span><br><span class="line">                    <span class="keyword">if</span>(newBit &gt; <span class="number">9</span>)&#123;</span><br><span class="line">                        carryBit = <span class="number">1</span>;</span><br><span class="line">                        newBit = newBit - <span class="number">10</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        carryBit = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    newTemList.next = <span class="keyword">new</span> ListNode(newBit);</span><br><span class="line">                    newTemList = newTemList.next;</span><br><span class="line">                    temList2 = temList2.next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(temList2 == <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">while</span>(temList1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    newBit = temList1.val + carryBit;</span><br><span class="line">                    <span class="keyword">if</span>(newBit &gt; <span class="number">9</span>)&#123;</span><br><span class="line">                        carryBit = <span class="number">1</span>;</span><br><span class="line">                        newBit = newBit - <span class="number">10</span>;</span><br><span class="line">                    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                        carryBit = <span class="number">0</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    newTemList.next = <span class="keyword">new</span> ListNode(newBit);</span><br><span class="line">                    newTemList = newTemList.next;</span><br><span class="line">                    temList1 = temList1.next;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            newBit = temList1.val + temList2.val + carryBit;</span><br><span class="line">            <span class="keyword">if</span>(newBit &gt; <span class="number">9</span>)&#123;</span><br><span class="line">                carryBit = <span class="number">1</span>;</span><br><span class="line">                newBit = newBit - <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                carryBit = <span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            newTemList.next = <span class="keyword">new</span> ListNode(newBit);</span><br><span class="line">            newTemList = newTemList.next;</span><br><span class="line">            temList1 = temList1.next;</span><br><span class="line">            temList2 = temList2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(carryBit == <span class="number">1</span>)&#123;</span><br><span class="line">            newTemList.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newList.next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2020/05/21/tex/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1009,7 +1153,7 @@ comments: false</code> </p>
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1020,7 +1164,7 @@ comments: false</code> </p>
               
               <div class="site-state-item site-state-categories">
                 <a href="/Categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
