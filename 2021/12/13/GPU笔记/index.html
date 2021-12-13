@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CUDA," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Toao" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="GPU笔记​        GPU全称是Graphics Processing Unit，图形处理单元，起初主要用来绘制图像和处理图元数据，后来逐渐加入了很多其他的功能。GPU是显卡的最主要的部分，显卡除了GPU还有散热器、通讯元件、各类插槽等其他部件。GPU的主要功能有：图形绘制、物理模拟、海量计算、AI运算、其他计算等。显卡不能独立工作，需要装载在主板上，结合CPU、内存、显存、显示器等硬件，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPU笔记">
+<meta property="og:url" content="https://toaoc.github.io/2021/12/13/GPU%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Toao">
+<meta property="og:description" content="GPU笔记​        GPU全称是Graphics Processing Unit，图形处理单元，起初主要用来绘制图像和处理图元数据，后来逐渐加入了很多其他的功能。GPU是显卡的最主要的部分，显卡除了GPU还有散热器、通讯元件、各类插槽等其他部件。GPU的主要功能有：图形绘制、物理模拟、海量计算、AI运算、其他计算等。显卡不能独立工作，需要装载在主板上，结合CPU、内存、显存、显示器等硬件，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/img1617944-20190906000754905-1644664290.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgFERMI.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgMaxwell.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgNVidia_Kepler.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgSMX.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgNvidia_Turing.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgTuring_SM.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgF.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgSM_exp.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgFermiAPI.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgfermi_core.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgdraw_processor.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgtriangle.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgattributes.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgROP.png">
+<meta property="article:published_time" content="2021-12-13T10:29:43.000Z">
+<meta property="article:modified_time" content="2021-12-13T10:28:31.613Z">
+<meta property="article:author" content="Toao">
+<meta property="article:tag" content="CUDA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Toaoc/image/main/img1617944-20190906000754905-1644664290.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://toaoc.github.io/2021/12/13/GPU笔记/"/>
+
+
+
+
+
+  <title>GPU笔记 | Toao</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Toao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2021/12/13/GPU%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Toao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GPU笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-13T18:29:43+08:00">
+                2021-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="GPU笔记"><a href="#GPU笔记" class="headerlink" title="GPU笔记"></a>GPU笔记</h1><p>​        GPU全称是Graphics Processing Unit，图形处理单元，起初主要用来绘制图像和处理图元数据，后来逐渐加入了很多其他的功能。GPU是显卡的最主要的部分，显卡除了GPU还有散热器、通讯元件、各类插槽等其他部件。GPU的主要功能有：图形绘制、物理模拟、海量计算、AI运算、其他计算等。显卡不能独立工作，需要装载在主板上，结合CPU、内存、显存、显示器等硬件，组成完整的PC机。</p>
+<h2 id="GPU结构"><a href="#GPU结构" class="headerlink" title="GPU结构"></a>GPU结构</h2><h3 id="NVidia-Teala架构"><a href="#NVidia-Teala架构" class="headerlink" title="NVidia Teala架构"></a>NVidia Teala架构</h3><p><img src="https://raw.githubusercontent.com/Toaoc/image/main/img1617944-20190906000754905-1644664290.png" alt="1617944-20190906000754905-1644664290"></p>
+<p>Tesla的微观总览图如上：</p>
+<ul>
+<li>拥有7组TPC（Texture Processor Cluster，纹理处理簇）</li>
+<li>每个TPC拥有两组SM（Stream Multiprocessor，流多处理器）</li>
+<li>每个SM包括：<ul>
+<li>6个SP（Streaming Processor，流处理器）</li>
+<li>2个SFU（Special Function Unit，特殊函数单元）</li>
+<li>L1缓存、MT Issue（多线程指令获取）、C-Cache（常量缓存）、共享内存</li>
+</ul>
+</li>
+<li>除了TPC核心单元，还有与显存、CPU、系统内存交互的各种部件。</li>
+</ul>
+<h3 id="NVidia-Fermi架构"><a href="#NVidia-Fermi架构" class="headerlink" title="NVidia Fermi架构"></a>NVidia Fermi架构</h3><p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgFERMI.png" alt="FERMI"></p>
+<p>Fermi架构如上图，它的特性如下：</p>
+<ul>
+<li>拥有16个SM</li>
+<li>每个SM：<ul>
+<li>2个Warp（线程束）</li>
+<li>两组共32个Core</li>
+<li>16组加载存储单元（LD/ST）</li>
+<li>4个特殊函数单元（SFU）</li>
+</ul>
+</li>
+<li>每个Warp：<ul>
+<li>16个Core</li>
+<li>Warp编排器（Warp Scheduler）</li>
+<li>分发单元（Dispatch Unit）</li>
+</ul>
+</li>
+<li>每个Core：<ul>
+<li>1个FPU（浮点数单元）</li>
+<li>1个ALU（逻辑运算单元）</li>
+</ul>
+</li>
+</ul>
+<h3 id="NVidia-Maxwell架构"><a href="#NVidia-Maxwell架构" class="headerlink" title="NVidia Maxwell架构"></a>NVidia Maxwell架构</h3><p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgMaxwell.png" alt="Maxwell"></p>
+<p>采用了Maxwell的GM204，拥有4个GPC，每个GPC有4个SM，对比Tesla架构来说，在处理单元上有了很大的提升。</p>
+<h3 id="NVidia-Kepler架构"><a href="#NVidia-Kepler架构" class="headerlink" title="NVidia Kepler架构"></a>NVidia Kepler架构</h3><p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgNVidia_Kepler.png" alt="NVidia_Kepler"></p>
+<p>Kepler除了在硬件有了提升，有了更多处理单元之外，还将SM升级到了SMX。SMX是改进的架构，支持动态创建渲染线程（下图），以降低延迟。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgSMX.png" alt="SMX"></p>
+<h3 id="NVidia-Turing架构"><a href="#NVidia-Turing架构" class="headerlink" title="NVidia Turing架构"></a>NVidia Turing架构</h3><p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgNvidia_Turing.png" alt="Nvidia_Turing"></p>
+<p>上图是采纳了Turing架构的TU102 GPU，它的特点如下：</p>
+<ul>
+<li>6 GPC（图形处理簇）</li>
+<li>36 TPC（纹理处理簇）</li>
+<li>72 SM（流多处理器）</li>
+<li>每个GPC有6个TPC，每个TPC有2个SM</li>
+<li>4,608 CUDA核</li>
+<li>72 RT核</li>
+<li>576 Tensor核</li>
+<li>288 纹理单元</li>
+<li>12x32位 GDDR6内存控制器 (共384位)</li>
+</ul>
+<p>单个SM的结构图如下：</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgTuring_SM.png" alt="Turing_SM"></p>
+<p>每个SM包含：</p>
+<ul>
+<li>64 CUDA核</li>
+<li>8 Tensor核</li>
+<li>256 KB寄存器文件</li>
+</ul>
+<h2 id="GPU运行机制"><a href="#GPU运行机制" class="headerlink" title="GPU运行机制"></a>GPU运行机制</h2><p>下图是Fermi架构总览：</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgF.png" alt="F"></p>
+<p>​        从Fermi开始NVIDIA使用类似的原理架构，使用一个Giga Thread Engine来管理所有正在运行的工作，GPU被划分为多个GPCs（Graphics Processing Cluster），每个GPC拥有多个SM（SMX、SMM）和一个光栅化引擎（Raster Engine），它们其中有很多的连接，最显著的是CrossBar，它可以连接GPCs和其他功能性模块（例如ROP或其他子系统）。</p>
+<p>​        程序员编写的shader（着色器）是在SM上完成的。每个SM包含许多为线程执行数学运算的Core（核心）。例如，一个线程可以是顶点或像素着色器调用。这些Core和其他单元由Warp Scheduler驱动，Warp Scheduler管理一组32个线程作为Warp（线程束），并将要执行的指令移交给Dispatch Units。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgSM_exp.png" alt="SM_exp"></p>
+<p>如上图，对于某些GPU（如Fermi部分型号）的单个SM，包含：</p>
+<ul>
+<li>32个运算核心 （Core，也叫流处理器Stream Processor）</li>
+<li>16个LD/ST（load/store）模块来加载和存储数据</li>
+<li>4个SFU（Special function units）执行特殊数学运算（sin、cos、log等）</li>
+<li>128KB寄存器（Register File）</li>
+<li>64KB L1缓存</li>
+<li>全局内存缓存（Uniform Cache）</li>
+<li>纹理读取单元</li>
+<li>纹理缓存（Texture Cache）</li>
+<li>PolyMorph Engine：多边形引擎负责属性装配（attribute Setup）、顶点拉取(VertexFetch)、曲面细分、栅格化（这个模块可以理解专门处理顶点相关的东西）。</li>
+<li>2个Warp Schedulers：这个模块负责warp调度，一个warp由32个线程组成，warp调度器的指令通过Dispatch Units送到Core执行。</li>
+<li>指令缓存（Instruction Cache）</li>
+<li>内部链接网络（Interconnect Network）</li>
+</ul>
+<h3 id="GPU逻辑管线"><a href="#GPU逻辑管线" class="headerlink" title="GPU逻辑管线"></a>GPU逻辑管线</h3><p>下面以Fermi家族的SM为例，进行逻辑管线的详细说明：</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgFermiAPI.png" alt="FermiAPI"></p>
+<ol>
+<li><p>程序通过图形API（DX、GL、WEBGL）发出drawcall指令，指令会被推送到驱动程序，驱动会检查指令的合法性，然后把指令放到GPU可以读取的Pushbuffer中。</p>
+</li>
+<li><p>经过一段时间或者显式调用flush指令后，驱动程序把Pushbuffer的内容发送给GPU，GPU通过主机接口（Host Interface）接受这些命令，并通过前端（Front End）处理这些命令。</p>
+</li>
+<li><p>在图元分配器（Primitive Distributor）中开始工作分配，处理indexBuffer中的顶点三角形并分成批次（batches），发送给多个GPCs，这一步就是将提交上来的n个三角形，分配给这几个GPCs同时处理。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgfermi_core.png" alt="fermi_core"></p>
+</li>
+<li><p>在GPC中，每个SM中的Poly Morph Engine负责通过三角形索引（triangle indexes）取出三角形的数据（vertex data），即图中的Vertex Fetch模块。</p>
+</li>
+<li><p>在获取数据之后，在SM中以32个线程为一组的线程束（Warp）来调度，开始处理顶点数据。Warp是典型的单指令多线程（SIMT，SIMD单指令多数据的升级）的实现，也就是32个线程同时执行的指令是一模一样的，只是线程的数据不一样，这样的好处是一个warp只需要一套逻辑对指令进行解码和执行就可以了，芯片可以做得更小更快，所以可以说GPU处理的任务天然是并行的。</p>
+</li>
+<li><p>SM的warp调度器会按照顺序分发指令给整个warp，单个warp中的线程会锁步（lock-step）执行各自的指令，如果线程碰到不激活执行的情况也会被遮掩（be masked out）。被遮掩的原因有很多，例如当前的指令是if(true)的分支，但是当前线程的数据是false，或者循环的次数不一样（比如for循环次数n不是常量，或者被break了，但是别的还在走），因此在shader（着色器）中的分支会显著增加时间消耗，在一个warp中的分支除非32个线程都走到if或者else里面，否则相当于所有的分支都走了一遍。线程不能独立执行指令，而是以这些warp为单位，这些warp之间才是独立的。</p>
+</li>
+<li><p>warp中的指令可以被一次执行，也可以经过多次调度执行。例如通常SM中的LD/ST（读写）单元数量明显少于基础数学操作单元。</p>
+</li>
+<li><p>由于某些指令比其他指令需要更长的时间才能完成，特别是内存加载，warp调度器可能会简单地切换到另一个没有内存等待的warp。为了切换更快，调度器管理的所有warp在寄存器文件中都有自己的寄存器。</p>
+<p>画图处理流程如下：</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgdraw_processor.png" alt="draw_processor"></p>
+</li>
+<li><p>一旦warp完成了vertex-shader的所有指令，运算结果会被Viewport Transform模块处理，三角形会被裁剪然后进行栅格化，GPU会使用L1和L2缓存来进行vertex-shader和pixel-shader的数据通信。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgtriangle.png" alt="triangle"></p>
+</li>
+<li><p>接下来这些三角形会被分割，再分配給多个GPC，三角形的范围决定着它被分配到哪个光栅引擎（raster engines），每个光栅引擎覆盖了多个屏幕的tile，这等于把三角形的渲染分配到多个tile上面。也就是像素阶段就把三角形按像素划分了。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgattributes.png" alt="attributes"></p>
+</li>
+<li><p>SM上的Atrribute Setup保证了vertex-shader来的数据经过插值之后是pixel-shader可读的。</p>
+</li>
+<li><p>GPC上的光栅引擎（raster engines）在它接收到的三角形上工作，负责这些三角形的像素信息的生成（同时会裁剪、背面剔除和Early-Z剔除）。</p>
+</li>
+<li><p>32个像素线程被分成一组，或者说8个2*2的像素块，这是像素着色器上面的最小的工作单元，在这个像素线程内，如果没有被三角形覆盖就会被遮掩，SM中的warp调度器会管理像素着色器的任务。</p>
+</li>
+<li><p>接下来的阶段和vertex-shader中的步骤完全一致，但是变成了在像素着色器线程中执行，由于不耗费任何性能可以获取一个像素内的值，导致锁步执行非常便利，所有的线程的指令可以保证在同一点。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgROP.png" alt="ROP"></p>
+</li>
+<li><p>最后一步，在像素着色器已经完成了颜色的计算和深度值的计算之后，在这个点上，我们必须考虑三角形的原始API的顺序，然后再将数据移交给ROP（render output unit，渲染输入单元），一个ROP内部有很多ROP单元，在ROP单元中处理深度测试，和framebuffer的混合，深度和颜色的设置必须是原子操作，否则两个三角形在同一像素点就会有冲突和错误。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CUDA/" rel="tag"># CUDA</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" rel="next" title="图的基本知识">
+                <i class="fa fa-chevron-left"></i> 图的基本知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Toao</p>
+              <p class="site-description motion-element" itemprop="description">Toao</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/Categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GPU笔记"><span class="nav-number">1.</span> <span class="nav-text">GPU笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU结构"><span class="nav-number">1.1.</span> <span class="nav-text">GPU结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NVidia-Teala架构"><span class="nav-number">1.1.1.</span> <span class="nav-text">NVidia Teala架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVidia-Fermi架构"><span class="nav-number">1.1.2.</span> <span class="nav-text">NVidia Fermi架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVidia-Maxwell架构"><span class="nav-number">1.1.3.</span> <span class="nav-text">NVidia Maxwell架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVidia-Kepler架构"><span class="nav-number">1.1.4.</span> <span class="nav-text">NVidia Kepler架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVidia-Turing架构"><span class="nav-number">1.1.5.</span> <span class="nav-text">NVidia Turing架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU运行机制"><span class="nav-number">1.2.</span> <span class="nav-text">GPU运行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU逻辑管线"><span class="nav-number">1.2.1.</span> <span class="nav-text">GPU逻辑管线</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

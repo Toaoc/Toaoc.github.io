@@ -73,6 +73,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="Toao" type="application/atom+xml" />
 
@@ -81,18 +83,20 @@
 
 
 
-<meta name="description" content="Windows下Hexo的一些问题记录 CMD直接使用hexo只出现三种选项，如下   ​    解决方法：将进入Hexo的文件夹里再使用相关命令  为Hexo的文章创建分类  hexo new page &amp;quot;Categories&amp;quot;,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主">
+<meta name="description" content="Windows下Hexo的一些问题记录 CMD直接使用hexo只出现三种选项，如下   ​    解决方法：将进入Hexo的文件夹里再使用相关命令  为Hexo的文章创建分类  hexo new page &quot;Categories&quot;,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo的一些问题记录">
-<meta property="og:url" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;2020&#x2F;05&#x2F;20&#x2F;test&#x2F;index.html">
+<meta property="og:url" content="https://toaoc.github.io/2020/05/20/test/index.html">
 <meta property="og:site_name" content="Toao">
-<meta property="og:description" content="Windows下Hexo的一些问题记录 CMD直接使用hexo只出现三种选项，如下   ​    解决方法：将进入Hexo的文件夹里再使用相关命令  为Hexo的文章创建分类  hexo new page &amp;quot;Categories&amp;quot;,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232143975.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232759383.png">
-<meta property="og:updated_time" content="2020-12-08T13:04:58.472Z">
+<meta property="og:description" content="Windows下Hexo的一些问题记录 CMD直接使用hexo只出现三种选项，如下   ​    解决方法：将进入Hexo的文件夹里再使用相关命令  为Hexo的文章创建分类  hexo new page &quot;Categories&quot;,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://toaoc.github.io/images/image-20200520232143975.png">
+<meta property="og:image" content="https://toaoc.github.io/images/image-20200520232759383.png">
+<meta property="article:published_time" content="2020-05-20T15:16:11.000Z">
+<meta property="article:modified_time" content="2020-12-08T13:04:58.472Z">
+<meta property="article:author" content="Toao">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;toaoc.github.io&#x2F;images&#x2F;image-20200520232143975.png">
+<meta name="twitter:image" content="https://toaoc.github.io/images/image-20200520232143975.png">
 
 
 
@@ -138,7 +142,7 @@
 
 
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
@@ -350,21 +354,11 @@
 <li><p><code>hexo new page &quot;Categories&quot;</code>,然后就会在source文件夹下生成Categories文件夹，里面有index.md。这个Categories对应的是所有分类项的页面，我们不需要主动添加分类项进去，只要你的markdown里的categories属性写了分类，该分类就会被添加到Categories页面。</p>
 </li>
 <li><p>对index.md的填写如下，comment代表评论</p>
-<p><code>title: &#39; Categories &#39;
-date: 2020-05-20 22:06:04
-type: &quot;categories&quot;
-comments: false</code> </p>
+<p><code>title: &#39; Categories &#39; date: 2020-05-20 22:06:04 type: &quot;categories&quot; comments: false</code> </p>
 </li>
 <li><p>对于Next主题的，在hexo\themes\next_config.yml中去除categories前面的#号，并且检查<code>home: /</code></p>
 <p>和<code>/categories/</code> 后是否有空格，有则去掉，否则会出现Cannot find /Categories/%20的错误</p>
-<p><code>home: /|| home
-  #about: /about/ || user
-  #tags: /tags/ || tags
-  categories: /categories/|| th
-  archives: /archives/ || archive
-  #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
-  #commonweal: /404/ || heartbeat</code>    </p>
+<p><code>  home: /|| home   #about: /about/ || user   #tags: /tags/ || tags   categories: /categories/|| th   archives: /archives/ || archive   #schedule: /schedule/ || calendar   #sitemap: /sitemap.xml || sitemap   #commonweal: /404/ || heartbeat</code>    </p>
 </li>
 <li><p>执行<code>hexo g</code> 和<code>hexo s</code> 在localhost:4000即可看到结果，然后<code>hexo d</code> 将修改上传到网页。</p>
 </li>
@@ -490,7 +484,7 @@ comments: false</code> </p>
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -507,6 +501,15 @@ comments: false</code> </p>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>

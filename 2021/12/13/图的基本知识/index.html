@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GNN," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="Toao" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="图的基本知识稀疏矩阵的存储方式Coordinate（COO）​        这是最简单的一种存储格式，每一个元素需要使用一个三元组来表示，分别是（行号，列号，数值），一个例子，如下： 1234567891011126, 0, 8, 00, 7, 0, 00, 0, 0, 00, 0, 0, 5对应的存储矩阵如下0, 0, 63, 3, 51, 1, 70, 2, 8即row &#x3D; [0,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图的基本知识">
+<meta property="og:url" content="https://toaoc.github.io/2021/12/13/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Toao">
+<meta property="og:description" content="图的基本知识稀疏矩阵的存储方式Coordinate（COO）​        这是最简单的一种存储格式，每一个元素需要使用一个三元组来表示，分别是（行号，列号，数值），一个例子，如下： 1234567891011126, 0, 8, 00, 7, 0, 00, 0, 0, 00, 0, 0, 5对应的存储矩阵如下0, 0, 63, 3, 51, 1, 70, 2, 8即row &#x3D; [0,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgPageRank%E5%AE%9E%E4%BE%8B.png">
+<meta property="article:published_time" content="2021-12-13T10:28:43.000Z">
+<meta property="article:modified_time" content="2021-12-13T10:28:03.754Z">
+<meta property="article:author" content="Toao">
+<meta property="article:tag" content="GNN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Toaoc/image/main/imgPageRank%E5%AE%9E%E4%BE%8B.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://toaoc.github.io/2021/12/13/图的基本知识/"/>
+
+
+
+
+
+  <title>图的基本知识 | Toao</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Toao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toaoc.github.io/2021/12/13/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Toao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图的基本知识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-13T18:28:43+08:00">
+                2021-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">本文总阅读量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="图的基本知识"><a href="#图的基本知识" class="headerlink" title="图的基本知识"></a>图的基本知识</h1><h2 id="稀疏矩阵的存储方式"><a href="#稀疏矩阵的存储方式" class="headerlink" title="稀疏矩阵的存储方式"></a>稀疏矩阵的存储方式</h2><h3 id="Coordinate（COO）"><a href="#Coordinate（COO）" class="headerlink" title="Coordinate（COO）"></a>Coordinate（COO）</h3><p>​        这是最简单的一种存储格式，每一个元素需要使用一个三元组来表示，分别是（行号，列号，数值），一个例子，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">6, 0, 8, 0</span><br><span class="line">0, 7, 0, 0</span><br><span class="line">0, 0, 0, 0</span><br><span class="line">0, 0, 0, 5</span><br><span class="line">对应的存储矩阵如下</span><br><span class="line">0, 0, 6</span><br><span class="line">3, 3, 5</span><br><span class="line">1, 1, 7</span><br><span class="line">0, 2, 8</span><br><span class="line">即row &#x3D; [0, 3, 1, 0]</span><br><span class="line">  col &#x3D; [0, 3, 1, 2]</span><br><span class="line">  data &#x3D; [6, 5, 7, 8]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Compressed-Sparse-Column（CSC）"><a href="#Compressed-Sparse-Column（CSC）" class="headerlink" title="Compressed Sparse Column（CSC）"></a>Compressed Sparse Column（CSC）</h3><p>​        CSC是按列进行存储的，其中indptr中的数据代表矩阵中每一列所存的数据在data中的开始和结束的索引，例如下面的indptr为[0, 2, 3, 6]，即表示在data中，索引[0, 2)为第一列的数据，索引[2, 3)为第二列的数据，索引[3, 6)为第三列的数据。而indices中的数据代表data数据对应的行（len(data) = len(indices)）。例如，这里的indices为[0, 2, 2, 0, 1, 2]，代表data中数据1在第0行，数据2在第2行，数据3在第2行，数据4在第0行，数据5在第一行，数据6在第2行。从而建立起一个稀疏矩阵。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; indptr = np.array([0, 2, 3, 6])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; indices = np.array([0, 2, 2, 0, 1, 2])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; data = np.array([1, 2, 3, 4, 5, 6])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; sparse.csc_matrix((data, indices, indptr), shape=(3, 3)).toarray()</span></span><br><span class="line">array([[1, 0, 4],</span><br><span class="line">       [0, 0, 5],</span><br><span class="line">       [2, 3, 6]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="Compressed-Sparse-Row（CSR）"><a href="#Compressed-Sparse-Row（CSR）" class="headerlink" title="Compressed Sparse Row（CSR）"></a>Compressed Sparse Row（CSR）</h3><p>​        CSR是按行来进行存储稀疏矩阵的，其原理和CSC类似。indptr中的数据表示矩阵中的每一行在data中的开始和结束索引，而indices表示data数据所在的列数。一个例子如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; indptr = np.array([0, 2, 3, 6])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; indices = np.array([0, 2, 2, 0, 1, 2])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; data = np.array([1, 2, 3, 4, 5, 6])</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; sparse.csr_matrix((data, indices, indptr), shape=(3, 3)).toarray()</span></span><br><span class="line">array([[1, 0, 2],</span><br><span class="line">       [0, 0, 3],</span><br><span class="line">       [4, 5, 6]])</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="同构图和异构图"><a href="#同构图和异构图" class="headerlink" title="同构图和异构图"></a>同构图和异构图</h2><p>​        在同构图中，所有节点表示同一类型的实体，所有边表示同一类型的关系。例如，社交网络的图由表示同一实体类型的人及其相互之间的社交关系组成。在异构图中，节点和边的类型可以不同。例如，市场的图可以有表示“顾客”、“商家”和“商品”的节点，它们通过“想购买”、“已经购买”、“是顾客”和“正在销售”的边进行相互连接。二分图是一种特殊的、常用的异构图，其中的边连接两类不同类型的节点。例如，在推荐系统中，可以使用二分图表示“用户”和“物品”之间的关系。</p>
+<h2 id="图的一些属性"><a href="#图的一些属性" class="headerlink" title="图的一些属性"></a>图的一些属性</h2><h3 id="特征向量中心性"><a href="#特征向量中心性" class="headerlink" title="特征向量中心性"></a>特征向量中心性</h3><p>考虑了自己的度以及它连接节点的度：$A*x = \lambda *x$ 。</p>
+<h3 id="中介中心性"><a href="#中介中心性" class="headerlink" title="中介中心性"></a>中介中心性</h3><p>$$<br>Betweenness = \frac{经过该节点的最短路径}{其余两两节点的最短路径}<br>$$</p>
+<p>中介中心性和介数类似，只不过上下都是总数</p>
+<h3 id="连接中心性"><a href="#连接中心性" class="headerlink" title="连接中心性"></a>连接中心性</h3><p>$$<br>Closeness = \frac{n-1}{节点到其他节点最短路径之和}<br>$$</p>
+<h2 id="图的一些算法"><a href="#图的一些算法" class="headerlink" title="图的一些算法"></a>图的一些算法</h2><h3 id="PageRank"><a href="#PageRank" class="headerlink" title="PageRank"></a>PageRank</h3><p>节点a的PageRank值计算如下：<br>$$<br>PR(a)<em>{i+1}=\sum</em>{i=0}^n\frac{PR(Ti)_i}{L(Ti)}<br>$$</p>
+<ul>
+<li>$PR(Ti)$代表的是其他节点（指向a节点的节点）的PR值</li>
+<li>$L(Ti)$代表的是其他节点（指向a节点的节点）的出度数</li>
+<li>$i$代表的是循环次数</li>
+</ul>
+<p>下面是PageRank的一个实例，PageRank在多次迭代之后会逐渐收敛。</p>
+<p><img src="https://raw.githubusercontent.com/Toaoc/image/main/imgPageRank%E5%AE%9E%E4%BE%8B.png" alt="PageRank实例"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GNN/" rel="tag"># GNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/13/make%E7%AC%94%E8%AE%B0/" rel="next" title="make笔记">
+                <i class="fa fa-chevron-left"></i> make笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/13/GPU%E7%AC%94%E8%AE%B0/" rel="prev" title="GPU笔记">
+                GPU笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Toao</p>
+              <p class="site-description motion-element" itemprop="description">Toao</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/Categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图的基本知识"><span class="nav-number">1.</span> <span class="nav-text">图的基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏矩阵的存储方式"><span class="nav-number">1.1.</span> <span class="nav-text">稀疏矩阵的存储方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Coordinate（COO）"><span class="nav-number">1.1.1.</span> <span class="nav-text">Coordinate（COO）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compressed-Sparse-Column（CSC）"><span class="nav-number">1.1.2.</span> <span class="nav-text">Compressed Sparse Column（CSC）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Compressed-Sparse-Row（CSR）"><span class="nav-number">1.1.3.</span> <span class="nav-text">Compressed Sparse Row（CSR）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同构图和异构图"><span class="nav-number">1.2.</span> <span class="nav-text">同构图和异构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的一些属性"><span class="nav-number">1.3.</span> <span class="nav-text">图的一些属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特征向量中心性"><span class="nav-number">1.3.1.</span> <span class="nav-text">特征向量中心性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中介中心性"><span class="nav-number">1.3.2.</span> <span class="nav-text">中介中心性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接中心性"><span class="nav-number">1.3.3.</span> <span class="nav-text">连接中心性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图的一些算法"><span class="nav-number">1.4.</span> <span class="nav-text">图的一些算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PageRank"><span class="nav-number">1.4.1.</span> <span class="nav-text">PageRank</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
