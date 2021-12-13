@@ -2,24 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://toaoc.github.io/2021/12/13/GPU%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2021-12-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://toaoc.github.io/2021/12/13/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</loc>
-    
-    <lastmod>2021-12-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://toaoc.github.io/2021/12/13/make%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2021-12-13</lastmod>
@@ -29,7 +11,25 @@
   </url>
   
   <url>
+    <loc>https://toaoc.github.io/2021/12/13/GPU%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2021-12-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://toaoc.github.io/2021/12/13/CUDA%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2021-12-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://toaoc.github.io/2021/12/13/%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/</loc>
     
     <lastmod>2021-12-13</lastmod>
     
@@ -92,20 +92,6 @@
 
   
   <url>
-    <loc>https://toaoc.github.io/tags/CUDA/</loc>
-    <lastmod>2021-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://toaoc.github.io/tags/%E6%9E%84%E5%BB%BA/</loc>
-    <lastmod>2021-12-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://toaoc.github.io/tags/GNN/</loc>
     <lastmod>2021-12-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -113,6 +99,13 @@
   </url>
   
 
+  
+  <url>
+    <loc>https://toaoc.github.io/categories/CUDA/</loc>
+    <lastmod>2021-12-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
   <url>
     <loc>https://toaoc.github.io/categories/Hexo/</loc>
@@ -137,6 +130,13 @@
   
   <url>
     <loc>https://toaoc.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2021-12-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://toaoc.github.io/categories/%E6%9E%84%E5%BB%BA/</loc>
     <lastmod>2021-12-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
