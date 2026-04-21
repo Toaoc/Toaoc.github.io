@@ -2660,3 +2660,80 @@ embed {
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
 }
+.about-page {
+  color: #555;
+}
+.about-hero {
+  margin-bottom: 40px;
+  padding: 28px 32px;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+.about-hero h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 30px;
+}
+.about-tagline {
+  margin: 0 0 12px;
+  color: #222;
+  font-size: 18px;
+}
+.about-contact {
+  margin: 0;
+}
+.about-page h3 {
+  margin-top: 34px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 22px;
+}
+.about-page p,
+.about-page li {
+  line-height: 1.9;
+}
+.about-page ul,
+.about-page ol {
+  margin-left: 20px;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.about-card {
+  padding: 24px 28px;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  background: #fff;
+}
+.about-card h3:first-child {
+  margin-top: 0;
+}
+.about-publications {
+  margin-top: 28px;
+}
+.about-publications li + li {
+  margin-top: 18px;
+}
+.about-note {
+  margin-top: 12px;
+  color: #777;
+  font-size: 13px;
+}
+@media (max-width: 767px) {
+  .about-hero {
+    padding: 22px 20px;
+  }
+  .about-hero h2 {
+    font-size: 26px;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .about-card {
+    padding: 20px;
+  }
+}

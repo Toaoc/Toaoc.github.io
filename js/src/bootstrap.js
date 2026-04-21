@@ -2,6 +2,20 @@
 
 $(document).ready(function () {
 
+  var ABOUT_PATH = '/about/';
+  var $menu = $('#menu');
+
+  if ($menu.length && !$menu.find('.menu-item-about').length) {
+    $menu.append([
+      '<li class="menu-item menu-item-about">',
+        '<a href="' + ABOUT_PATH + '" rel="section">',
+          '<i class="menu-item-icon fa fa-fw fa-user"></i> <br />',
+          'About',
+        '</a>',
+      '</li>'
+    ].join(''));
+  }
+
   $(document).trigger('bootstrap:before');
 
   NexT.utils.isMobile() && window.FastClick.attach(document.body);
